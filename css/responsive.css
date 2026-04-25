@@ -1,0 +1,62 @@
+/* MOBILE */
+@media (max-width:768px){
+
+.sidebar {
+  transform:translateX(-100%);
+  transition:0.3s;
+}
+
+.sidebar.active {
+  transform:translateX(0);
+}
+
+.menu-toggle {
+  position:fixed;
+  top:10px;
+  left:10px;
+  font-size:24px;
+  z-index:20;
+}
+
+.cards {
+  flex-direction:column;
+}
+
+.section {
+  padding:60px 15px;
+}
+
+}
+
+/* TABLET */
+@media (max-width:1024px){
+.cards {
+  gap:15px;
+}
+}
+
+/* SMALL MOBILE */
+@media (max-width:480px){
+h1 {
+  font-size:1.5rem;
+}
+
+.card {
+  padding:20px;
+}
+}
+@media (max-width:768px){
+
+.section {
+  padding: 60px 20px;
+}
+
+.hero {
+  text-align: center;
+}
+
+button {
+  width: 100%;
+}
+
+}

@@ -1,0 +1,367 @@
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ================= BODY ================= */
+body {
+  font-family: sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+
+  background: linear-gradient(270deg, #0b0b0b, #1a0f05, #000);
+  background-size: 600% 600%;
+  animation: bgFlow 15s ease infinite;
+}
+
+@keyframes bgFlow {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+/* ================= CANVAS ================= */
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* ================= TYPOGRAPHY ================= */
+h1 {
+  font-size: clamp(2rem, 6vw, 4rem);
+  text-align: center;
+  text-shadow:
+    0 0 10px rgba(212,175,55,0.8),
+    0 0 20px rgba(212,175,55,0.6),
+    0 0 40px rgba(212,175,55,0.4);
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  opacity: 0.85;
+}
+
+/* ================= SECTIONS ================= */
+.section {
+  min-height: 100vh;
+  padding: clamp(60px, 8vw, 100px) 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ================= HERO ================= */
+.hero {
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+
+  opacity: 0;
+  transform: translateY(50px);
+  transition: 1s ease;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background: rgba(15,15,15,0.95);
+  backdrop-filter: blur(10px);
+  transform: translateX(-100%);
+  transition: 0.3s;
+  z-index: 100;
+}
+
+.sidebar.active {
+  transform: translateX(0);
+}
+
+.sidebar li {
+  padding: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebar li:hover {
+  background: rgba(212,175,55,0.15);
+}
+
+/* ================= MENU ================= */
+.menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  font-size: 24px;
+  z-index: 200;
+  cursor: pointer;
+}
+
+/* ================= CARDS ================= */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  padding: 30px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+
+  transition: 0.4s;
+  animation: float 6s ease-in-out infinite;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 0 25px rgba(212,175,55,0.6);
+}
+
+/* FLOAT */
+@keyframes float {
+  0% {transform: translateY(0);}
+  50% {transform: translateY(-10px);}
+  100% {transform: translateY(0);}
+}
+
+/* ================= BUTTON ================= */
+button {
+  background: linear-gradient(45deg, gold, orange);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px gold;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: rgba(20,20,20,0.95);
+  padding: 25px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 12px;
+}
+
+/* ================= CURSOR ================= */
+.cursor {
+  width: 12px;
+  height: 12px;
+  background: gold;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  box-shadow: 0 0 20px gold;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(10px);
+  padding: 80px 20px 30px;
+  border-top: 1px solid rgba(212,175,55,0.2);
+}
+
+/* GLOW LINE */
+.footer-glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, gold, transparent);
+  margin-bottom: 40px;
+}
+
+/* GRID */
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-section h2 {
+  color: gold;
+}
+
+.footer-section h3 {
+  color: #fff;
+}
+
+.footer-section a {
+  color: #bbb;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-section a:hover {
+  color: gold;
+  transform: translateX(5px);
+}
+
+/* ================= SOCIAL ================= */
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(5px);
+
+  transition: 0.4s;
+}
+
+.icon svg {
+  width: 20px;
+  fill: #ccc;
+}
+
+.icon:hover {
+  transform: translateY(-6px) scale(1.1);
+}
+
+.icon:hover svg {
+  fill: #fff;
+}
+
+/* ================= FOOTER BOTTOM ================= */
+.footer-bottom {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .section {
+    padding: 60px 15px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+}
+/* BACKGROUND IMAGE LAYER */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background: url("../assets/images/bg.jpg") center/cover no-repeat;
+
+  opacity: 0.25; /* control visibility */
+  z-index: -2;
+}
+body::before {
+  filter: contrast(1.1) brightness(0.8) saturate(1.2);
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.6); /* controls darkness */
+  z-index: -1;
+}
+/* ================= BACKGROUND SYSTEM ================= */
+
+#bgImage {
+  position: fixed;
+  inset: 0;
+
+  background-size: cover;
+  background-position: center;
+
+  z-index: -2;
+
+  transition: 
+    background-image 1s ease,
+    transform 8s ease,
+    filter 0.6s ease;
+
+  will-change: transform, filter;
+}
+
+/* DARK OVERLAY */
+#bgImage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+/* BLUR ON SCROLL */
+.blur-bg {
+  filter: blur(6px) brightness(0.7);
+}
+
+/* ZOOM EFFECT */
+.zoom-bg {
+  transform: scale(1.15);
+}
