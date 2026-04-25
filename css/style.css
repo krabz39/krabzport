@@ -510,3 +510,44 @@ body.nav-open::after {
 .menu-toggle:hover {
   background: rgba(212,175,55,0.2);
 }
+/* ================= ICON ALIGNMENT FIX ================= */
+
+/* container alignment */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;   /* 🔥 vertical alignment */
+  gap: 16px;
+}
+
+/* icon circle */
+.icon {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;   /* 🔥 center vertically */
+  justify-content: center; /* 🔥 center horizontally */
+
+  border-radius: 50%;
+  position: relative;
+
+  line-height: 0; /* 🔥 removes extra inline spacing */
+}
+
+/* svg alignment fix */
+.icon svg {
+  width: 22px;
+  height: 22px;
+
+  display: block; /* 🔥 removes baseline shift */
+  margin: auto;   /* 🔥 perfect center */
+
+  transform: translateY(0.5px); 
+  /* 🔥 micro-adjust: fixes visual imbalance */
+}
+
+/* hover stays centered */
+.icon:hover svg {
+  transform: translateY(0.5px) scale(1.05);
+}
