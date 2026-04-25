@@ -113,10 +113,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const sections = [
     { id: "home", img: "assets/images/IMG_3935.JPEG" },
     { id: "about", img: "assets/images/798A0C55-91D8-4B55-8BF9-09C5DBB9D5D3.JPEG" },
-    { id: "work", img: "assets/images/bg3.jpg" },
-    { id: "projects", img: "assets/images/bg4.jpg" },
-    { id: "lab", img: "assets/images/bg5.jpg" },
-    { id: "contact", img: "assets/images/bg6.jpg" }
+    { id: "work", img: "assets/images/IMG_3935.JPEG" },
+    { id: "projects", img: "assets/images/IMG_3935.JPEG" },
+    { id: "lab", img: "assets/images/IMG_3935.JPEG" },
+    { id: "contact", img: "assets/images/IMG_3935.JPEG" }
   ];
 
   /* SET INITIAL BACKGROUND */
