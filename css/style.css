@@ -59,6 +59,10 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  /* 🔥 FIX: ensure content sits above overlays */
+  position: relative;
+  z-index: 2;
 }
 
 /* ================= HERO ================= */
@@ -238,6 +242,10 @@ button:hover {
 .social-icons {
   display: flex;
   gap: 15px;
+
+  /* 🔥 FIX: ensure icons are above overlays */
+  position: relative;
+  z-index: 5;
 }
 
 .icon {
@@ -253,11 +261,19 @@ button:hover {
   backdrop-filter: blur(5px);
 
   transition: 0.4s;
+
+  /* 🔥 FIX */
+  position: relative;
+  z-index: 5;
 }
 
 .icon svg {
-  width: 20px;
-  fill: #ccc;
+  width: 22px;
+  height: 22px;
+
+  /* 🔥 FIX: force visibility */
+  fill: #ffffff !important;
+  display: block;
 }
 
 .icon:hover {
@@ -265,7 +281,7 @@ button:hover {
 }
 
 .icon:hover svg {
-  fill: #fff;
+  fill: #000 !important;
 }
 
 /* ================= FOOTER BOTTOM ================= */
@@ -307,7 +323,8 @@ button:hover {
   }
 
 }
-/* BACKGROUND IMAGE LAYER */
+
+/* ================= BACKGROUND IMAGE LAYER (FIXED MERGE) ================= */
 body::before {
   content: "";
   position: fixed;
@@ -315,22 +332,22 @@ body::before {
 
   background: url("../assets/images/bg.jpg") center/cover no-repeat;
 
-  opacity: 0.25; /* control visibility */
+  opacity: 0.25;
   z-index: -2;
-}
-body::before {
+
   filter: contrast(1.1) brightness(0.8) saturate(1.2);
 }
+
 body::after {
   content: "";
   position: fixed;
   inset: 0;
 
-  background: rgba(0,0,0,0.6); /* controls darkness */
+  background: rgba(0,0,0,0.6);
   z-index: -1;
 }
-/* ================= BACKGROUND SYSTEM ================= */
 
+/* ================= BACKGROUND SYSTEM ================= */
 #bgImage {
   position: fixed;
   inset: 0;
@@ -348,7 +365,6 @@ body::after {
   will-change: transform, filter;
 }
 
-/* DARK OVERLAY */
 #bgImage::after {
   content: "";
   position: absolute;
@@ -356,12 +372,141 @@ body::after {
   background: rgba(0,0,0,0.6);
 }
 
-/* BLUR ON SCROLL */
 .blur-bg {
   filter: blur(6px) brightness(0.7);
 }
 
-/* ZOOM EFFECT */
 .zoom-bg {
   transform: scale(1.15);
+}
+/* ================= NAV UX FIX ================= */
+
+/* prevent background scroll */
+body.nav-open {
+  overflow: hidden;
+}
+
+/* smooth sidebar */
+.sidebar {
+  transition: transform 0.35s ease;
+}
+
+/* hamburger animation */
+.menu-toggle {
+  transition: transform 0.3s ease;
+}
+
+.menu-toggle.active {
+  transform: rotate(90deg);
+}
+
+/* mobile swipe friendliness */
+.sidebar {
+  touch-action: pan-y;
+}
+/* ================= SIDEBAR SHAPE UPGRADE ================= */
+
+/* DESKTOP BASE */
+.sidebar {
+  width: 240px;
+  padding-top: 80px;
+}
+
+/* MENU ITEMS */
+.sidebar ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+
+.sidebar li {
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 1rem;
+
+  background: rgba(255,255,255,0.03);
+
+  transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.sidebar li:hover {
+  background: rgba(212,175,55,0.15);
+  transform: translateX(6px);
+}
+
+/* ACTIVE FEEL (tap feedback) */
+.sidebar li:active {
+  transform: scale(0.97);
+}
+
+/* ================= MOBILE UPGRADE ================= */
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 80%;
+    max-width: 300px;
+
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    box-shadow: 10px 0 40px rgba(0,0,0,0.6);
+  }
+
+  .sidebar ul {
+    padding: 30px 20px;
+    gap: 14px;
+  }
+
+  .sidebar li {
+    font-size: 1.1rem;
+    padding: 16px 20px;
+
+    border-radius: 12px;
+  }
+
+}
+
+/* ================= EXTRA SMALL DEVICES ================= */
+@media (max-width: 480px) {
+
+  .sidebar {
+    width: 85%;
+  }
+
+  .sidebar li {
+    font-size: 1.15rem;
+  }
+
+}
+
+/* ================= SMOOTH ENTRY ================= */
+.sidebar.active {
+  transform: translateX(0);
+}
+
+/* ================= OVERLAY FEEL ================= */
+body.nav-open::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(3px);
+
+  z-index: 50;
+}
+
+/* ================= MENU ICON POLISH ================= */
+.menu-toggle {
+  padding: 8px 12px;
+  border-radius: 8px;
+
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(5px);
+}
+
+.menu-toggle:hover {
+  background: rgba(212,175,55,0.2);
 }
