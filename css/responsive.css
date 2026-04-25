@@ -1,62 +1,110 @@
-/* MOBILE */
-@media (max-width:768px){
+/* ================= TABLET (≤1024px) ================= */
+@media (max-width: 1024px){
 
-.sidebar {
-  transform:translateX(-100%);
-  transition:0.3s;
-}
+  .cards {
+    gap: 18px;
+  }
 
-.sidebar.active {
-  transform:translateX(0);
-}
-
-.menu-toggle {
-  position:fixed;
-  top:10px;
-  left:10px;
-  font-size:24px;
-  z-index:20;
-}
-
-.cards {
-  flex-direction:column;
-}
-
-.section {
-  padding:60px 15px;
-}
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
 }
 
-/* TABLET */
-@media (max-width:1024px){
-.cards {
-  gap:15px;
-}
+/* ================= MOBILE (≤768px) ================= */
+@media (max-width: 768px){
+
+  /* SIDEBAR */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.35s ease;
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  /* MENU BUTTON */
+  .menu-toggle {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    font-size: 24px;
+    z-index: 200;
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 60px 20px;
+  }
+
+  .hero {
+    text-align: center;
+  }
+
+  /* CARDS (FIXED: KEEP GRID, NOT FLEX) */
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  /* BUTTONS */
+  button {
+    width: 100%;
+  }
+
+  /* SOCIAL ICONS */
+  .social-icons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
 }
 
-/* SMALL MOBILE */
-@media (max-width:480px){
-h1 {
-  font-size:1.5rem;
+/* ================= SMALL MOBILE (≤480px) ================= */
+@media (max-width: 480px){
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .sidebar {
+    width: 85%;
+  }
+
 }
 
-.card {
-  padding:20px;
-}
-}
-@media (max-width:768px){
+/* ================= ULTRA SMALL (≤360px) ================= */
+@media (max-width: 360px){
 
-.section {
-  padding: 60px 20px;
-}
+  h1 {
+    font-size: 1.4rem;
+  }
 
-.hero {
-  text-align: center;
-}
+  .menu-toggle {
+    font-size: 20px;
+  }
 
-button {
-  width: 100%;
-}
+  .card {
+    padding: 16px;
+  }
 
 }
