@@ -1,0 +1,21 @@
+.cursor{
+width:18px;
+height:18px;
+border-radius:50%;
+background:#7D2F2F;
+position:fixed;
+pointer-events:none;
+z-index:9999;
+mix-blend-mode:difference;
+transform:translate(-50%,-50%);
+}
+
+.tilt{
+transition:0.3s ease;
+}
+
+.project-card:hover,
+.cert-card:hover,
+.about-card:hover{
+transform:translateY(-8px);
+}

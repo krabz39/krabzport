@@ -1,295 +1,584 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<head>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Kenyankrabz | Coffee Portfolio</title>
+
+<!-- GOOGLE FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- LEAFLET -->
+
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<!-- AOS -->
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+<!-- CSS -->
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/map.css">
+
 </head>
 
 <body>
 
-<!-- BACKGROUND -->
-<div id="bgImage"></div>
-<canvas id="bgCanvas"></canvas>
+<!-- ================= CURSOR ================= -->
 
-<!-- LOADER -->
-<div id="loader">Brewing your experience...</div>
-
-<!-- CURSOR -->
 <div class="cursor"></div>
 
-<!-- MENU -->
-<div class="menu-toggle" id="menuToggle">☰</div>
+<!-- ================= NAVBAR ================= -->
 
-<!-- SIDEBAR -->
-<nav class="sidebar" id="sidebar">
-  <ul>
-    <li data-section="home">Home</li>
-    <li data-section="about">About</li>
-    <li data-section="work">Work</li>
-    <li data-section="projects">Projects</li>
-    <li data-section="lab">Lab</li>
-    <li data-section="contact">Contact</li>
-  </ul>
+<nav class="navbar">
+
+<div class="logo-wrapper">
+
+<div class="logo-circle">
+K
+</div>
+
+<div>
+<h2>KENYANKRABZ</h2>
+<p>BARISTA • ROASTER • CONNOISSEUR</p>
+</div>
+
+</div>
+
+<ul class="nav-links">
+
+<li><a href="#home">HOME</a></li>
+<li><a href="#about">ABOUT</a></li>
+<li><a href="#certifications">CERTIFICATIONS</a></li>
+<li><a href="#map-section">COFFEE MAP</a></li>
+<li><a href="#projects">PROJECTS</a></li>
+<li><a href="#gallery">GALLERY</a></li>
+<li><a href="#contact">CONTACT</a></li>
+
+</ul>
+
+<a href="#contact" class="nav-btn">
+LET'S CONNECT
+</a>
+
 </nav>
 
-<main>
+<!-- ================= HERO ================= -->
 
-<!-- HERO -->
-<section id="home" class="section hero">
-  <h1 id="typing"></h1>
+<section class="hero" id="home">
 
-  <!-- NEW IDENTITY -->
-  <p class="identity-line">
-    Barista • Roaster • Coffee Innovator • System Builder
-  </p>
+<div class="hero-content" data-aos="fade-up">
 
-  <p>I engineer coffee experiences & build systems that create freedom.</p>
+<p class="mini-title">
+BREWING LEGACY THROUGH
+</p>
 
-  <!-- COFFEE TAGS -->
-  <div class="coffee-tags">
-    <span>☕ Barista</span>
-    <span>🔥 Roaster</span>
-    <span>🧪 Fermentation</span>
-    <span>🌍 Coffee Systems</span>
-  </div>
+<h1>
+COFFEE, <br>
+CREATIVITY & <br>
+EXCELLENCE
+</h1>
 
-  <!-- ESPRESSO ANIMATION -->
-  <div class="espresso-machine">
-    <div class="coffee-stream"></div>
-    <div class="cup"></div>
-  </div>
+<p class="hero-text">
 
-  <button onclick="document.getElementById('projects').scrollIntoView()">
-    Explore My Work
-  </button>
-</section>
+I'm Eugene, a barista, roaster and coffee connoisseur passionate about crafting exceptional coffee experiences and inspiring a global coffee culture.
 
-<!-- ABOUT -->
-<section id="about" class="section reveal">
-  <h2>Who I Am</h2>
-  <p>
-    I’m Eugene — a coffee innovator and systems builder.  
-    I create coffee experiences, automation systems, and digital platforms designed for independence.
-  </p>
-</section>
+</p>
 
-<!-- NEW CRAFT SECTION -->
-<section class="section reveal">
-  <h2>My Craft</h2>
+<div class="hero-buttons">
 
-  <div class="cards">
-    <div class="card">
-      <img src="assets/images/barista.jpg">
-      <p>Dialing espresso & milk texture</p>
-    </div>
+<a href="#" class="btn-primary">
+EXPLORE MY JOURNEY
+</a>
 
-    <div class="card">
-      <img src="assets/images/roasting.jpg">
-      <p>Roasting profiles & heat control</p>
-    </div>
+<a href="#certifications" class="btn-secondary">
+VIEW CERTIFICATIONS
+</a>
 
-    <div class="card">
-      <img src="assets/images/fermentation.jpg">
-      <p>Experimental fermentation systems</p>
-    </div>
-  </div>
-</section>
+</div>
 
-<!-- WORK -->
-<section id="work" class="section cards reveal">
+<div class="socials">
 
-  <div class="card">
-    <h3>☕ Coffee Innovation</h3>
-    <p>Advanced fermentation & flavor engineering.</p>
-  </div>
+<a href="#">IG</a>
+<a href="#">TIKTOK</a>
+<a href="#">LINKEDIN</a>
+<a href="#">EMAIL</a>
 
-  <div class="card">
-    <h3>💻 Tech Systems</h3>
-    <p>Web apps, bots & automation systems.</p>
-  </div>
+</div>
 
-  <div class="card">
-    <h3>🧠 Business Systems</h3>
-    <p>Scalable brands and monetization systems.</p>
-  </div>
+</div>
+
+<div class="hero-image" data-aos="fade-left">
+
+<img src="assets/images/hero.jpg" alt="Hero">
+
+</div>
 
 </section>
 
-<!-- PROJECTS -->
-<section id="projects" class="section cards reveal">
+<!-- ================= ABOUT ================= -->
 
-  <div class="card project" onclick="window.open('https://yourportfolio.com')">
-    <img src="assets/images/project1.jpg">
-    <h3>Portfolio System</h3>
-    <p>Personal ecosystem combining coffee + tech.</p>
-  </div>
+<section class="about" id="about">
 
-  <div class="card project" onclick="window.open('https://yourbotlink.com')">
-    <img src="assets/images/project2.jpg">
-    <h3>Telegram Automation</h3>
-    <p>Payment + workflow automation bot.</p>
-  </div>
+<div class="about-left" data-aos="fade-right">
 
-  <div class="card project" onclick="window.open('https://github.com/yourhandle')">
-    <img src="assets/images/project3.jpg">
-    <h3>Trading EA</h3>
-    <p>Algorithmic trading system with risk control.</p>
-  </div>
+<h2>ABOUT ME</h2>
 
-  <div class="card project">
-    <img src="assets/images/project4.jpg">
-    <h3>Coffee Processing Lab</h3>
-    <p>Experimental fermentation systems.</p>
-  </div>
+<p>
 
-</section>
+Coffee is more than a drink to me, it's a culture,
+a science, an art and a way to connect people.
+From the farms to the final cup, I'm committed
+to quality, sustainability and creating meaningful experiences.
 
-<!-- MONEY -->
-<section class="section reveal">
+</p>
 
-  <h2>Build With Me</h2>
+<h3>Eugene</h3>
 
-  <div class="cards">
+</div>
 
-    <div class="card">
-      <h3>📘 Coffee Processing Guide</h3>
-      <p>Advanced fermentation & brewing techniques.</p>
-      <button>Buy Now</button>
-    </div>
+<div class="about-grid">
 
-    <div class="card">
-      <h3>☕ Barista Coaching</h3>
-      <p>Personal mentorship in coffee & systems.</p>
-      <button onclick="window.open('https://wa.me/254706445569')">Book Now</button>
-    </div>
+<div class="about-card tilt">
 
-    <div class="card">
-      <h3>🔥 Custom Roasting Systems</h3>
-      <p>I build automation tools & digital systems.</p>
-      <button onclick="window.open('mailto:kirubieugene@gmail.com')">Hire Me</button>
-    </div>
+<h4>BARISTA</h4>
 
-  </div>
+<p>
+Crafting memorable coffee experiences.
+</p>
 
-</section>
+</div>
 
-<!-- LAB -->
-<section id="lab" class="section reveal">
-  <h2>Coffee Lab</h2>
+<div class="about-card tilt">
 
-  <div class="cards">
-    <div class="card">
-      <h3>🍬 Candy Cup</h3>
-      <p>Sweet, fruity fermentation</p>
-    </div>
+<h4>ROASTER</h4>
 
-    <div class="card">
-      <h3>🌴 Tropical Bomb</h3>
-      <p>Explosive tropical notes</p>
-    </div>
+<p>
+Developing unique roast profiles.
+</p>
 
-    <div class="card">
-      <h3>🍷 Winey Floral</h3>
-      <p>Complex floral acidity</p>
-    </div>
-  </div>
+</div>
 
-  <p>
-    Creating experimental profiles like Candy Cup, Tropical Bomb, and Winey Floral.
-  </p>
+<div class="about-card tilt">
 
-  <button id="labMode">Enter Lab</button>
-</section>
+<h4>CONNOISSEUR</h4>
 
-<!-- STATS -->
-<section class="section">
-  <h2>Impact</h2>
+<p>
+Exploring origins, flavors & stories.
+</p>
 
-  <div class="cards">
-    <div class="card">
-      <h3 class="stat" data-target="1000">0</h3>
-      <p>Experiments</p>
-    </div>
+</div>
 
-    <div class="card">
-      <h3 class="stat" data-target="20">0</h3>
-      <p>Systems Built</p>
-    </div>
+<div class="about-card tilt">
 
-    <div class="card">
-      <h3 class="stat" data-target="5">0</h3>
-      <p>Projects</p>
-    </div>
-  </div>
-</section>
+<h4>CREATOR</h4>
 
-<!-- CONTACT -->
-<section id="contact" class="section reveal">
+<p>
+Building brands and coffee concepts.
+</p>
 
-  <h2>Let’s Build</h2>
+</div>
 
-  <div class="contact-actions">
-    <button onclick="window.location.href='mailto:kirubieugene@gmail.com'">Email Me</button>
-    <button onclick="window.open('https://wa.me/254706445569')">WhatsApp</button>
-  </div>
-
-  <!-- SOCIAL -->
-  <div class="social-icons">
-    <a href="#" class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg></a>
-    <a href="#" class="icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16"/></svg></a>
-    <a href="#" class="icon"><svg viewBox="0 0 24 24"><polygon points="12,2 22,22 2,22"/></svg></a>
-  </div>
+</div>
 
 </section>
 
-</main>
+<!-- ================= STATS ================= -->
+
+<section class="stats">
+
+<div class="stat">
+<h2 class="counter" data-target="4">0</h2>
+<p>Years In Coffee</p>
+</div>
+
+<div class="stat">
+<h2 class="counter" data-target="10000">0</h2>
+<p>Cups Brewed</p>
+</div>
+
+<div class="stat">
+<h2 class="counter" data-target="25">0</h2>
+<p>Roast Profiles</p>
+</div>
+
+<div class="stat">
+<h2 class="counter" data-target="15">0</h2>
+<p>Certifications</p>
+</div>
+
+<div class="stat">
+<h2 class="counter" data-target="20">0</h2>
+<p>Projects</p>
+</div>
+
+</section>
+
+<!-- ================= CERTIFICATIONS ================= -->
+
+<section class="certifications" id="certifications">
+
+<div class="section-top">
+
+<h2>SCA CERTIFICATIONS</h2>
+
+<a href="#">VIEW ALL</a>
+
+</div>
+
+<div id="certModal" class="cert-modal">
+  <div class="cert-modal-content">
+    <span class="close" onclick="closeCert()">×</span>
+    <iframe id="certFrame"></iframe>
+  </div>
+</div>
+
+<script>
+function openCert(pdfUrl) {
+  document.getElementById("certFrame").src = pdfUrl;
+  document.getElementById("certModal").style.display = "block";
+}
+
+function closeCert() {
+  document.getElementById("certModal").style.display = "none";
+  document.getElementById("certFrame").src = "";
+}
+</script>
 
 
-<!-- FOOTER -->
+<div class="cert-card tilt" onclick="openCert('assets/certificates/CSP Roasting-Foundation.pdf')">
+
+  <div class="cert-thumb">
+    <img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
+    <div class="cert-overlay">
+      <span>View Certificate</span>
+    </div>
+  </div>
+
+  <h3>CSP Roasting-Foundation</h3>
+  <p>SCA</p>
+
+</div>
+
+
+<div class="cert-card tilt" onclick="openCert('assets/certificates/CSP Roasting-Intermediate.pdf')">
+
+  <div class="cert-thumb">
+    <img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
+    <div class="cert-overlay">
+      <span>View Certificate</span>
+    </div>
+  </div>
+
+  <h3>CSP Roasting-Intermediate</h3>
+  <p>SCA</p>
+
+</div>
+
+<div class="cert-card tilt" onclick="openCert('assets/certificates/CSP Roasting-Foundation.pdf')">
+
+  <div class="cert-thumb">
+    <img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
+    <div class="cert-overlay">
+      <span>View Certificate</span>
+    </div>
+  </div>
+
+  <h3>Skills Professional</h3>
+  <p>SCA</p>
+
+</div>
+
+<div class="cert-card tilt" onclick="openCert('assets/certificates/CSP Roasting-Foundation.pdf')">
+
+  <div class="cert-thumb">
+    <img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
+    <div class="cert-overlay">
+      <span>View Certificate</span>
+    </div>
+  </div>
+
+  <h3> Skills Professional</h3>
+  <p>SCA</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= TIMELINE ================= -->
+
+<section class="timeline-section">
+
+<div class="section-top">
+
+<h2>EXPERIENCE & ACHIEVEMENTS</h2>
+
+</div>
+
+<div class="timeline">
+
+<div class="timeline-item">
+<h3>2023
+</h3>
+<p>Started Coffee Journey</p>
+</div>
+
+<div class="timeline-item">
+<h3>2020</h3>
+<p>Café Experience</p>
+</div>
+
+<div class="timeline-item">
+<h3>2021</h3>
+<p>Roasting Specialization</p>
+</div>
+
+<div class="timeline-item">
+<h3>2022</h3>
+<p>SCA Certified</p>
+</div>
+
+<div class="timeline-item">
+<h3>2023</h3>
+<p>Roots & Roast Founded</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= MAP ================= -->
+
+<section class="map-section" id="map-section">
+
+<div class="section-top">
+
+<h2>COFFEE ORIGINS & EXPLORATION</h2>
+
+</div>
+
+<div id="map"></div>
+
+<div class="map-card">
+
+<h3>Ethiopia — Guji</h3>
+
+<p>
+<strong>Flavor Notes:</strong><br>
+Floral, Peach, Citrus, Tea-like
+</p>
+
+<p>
+<strong>Processing:</strong><br>
+Honey Anaerobic
+</p>
+
+<p>
+<strong>Roast:</strong><br>
+Light — Medium
+</p>
+
+<button>
+VIEW JOURNEY
+</button>
+
+</div>
+
+</section>
+
+<!-- ================= PROJECTS ================= -->
+
+<section class="projects" id="projects">
+
+<div class="section-top">
+
+<h2>FEATURED PROJECTS</h2>
+
+<a href="#">
+VIEW ALL PROJECTS
+</a>
+
+</div>
+
+<div class="project-grid">
+
+<div class="project-card tilt">
+
+<img src="assets/images/project-1.jpg">
+
+<h3>Signature Menu</h3>
+
+<p>Design & Development</p>
+
+</div>
+
+<div class="project-card tilt">
+
+<img src="assets/images/project-2.jpg">
+
+<h3>Roast Profile</h3>
+
+<p>Ethiopia Guji</p>
+
+</div>
+
+<div class="project-card tilt">
+
+<img src="assets/images/project-3.jpg">
+
+<h3>Café Concept</h3>
+
+<p>Roots & Roast</p>
+
+</div>
+
+<div class="project-card tilt">
+
+<img src="assets/images/project-4.jpg">
+
+<h3>Barista Training</h3>
+
+<p>Workshops</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= GALLERY ================= -->
+
+<section class="gallery" id="gallery">
+
+<div class="section-top">
+
+<h2>COFFEE GALLERY</h2>
+
+</div>
+
+<div class="gallery-grid">
+
+<img src="assets/images/project-1.jpg">
+<img src="assets/images/project-2.jpg">
+<img src="assets/images/project-3.jpg">
+<img src="assets/images/project-4.jpg">
+
+</div>
+
+</section>
+
+<!-- ================= CONTACT ================= -->
+
+<section class="contact" id="contact">
+
+<div class="contact-content">
+
+<h2>LET'S WORK TOGETHER</h2>
+
+<p>
+
+I'm always open to collaborations,
+consulting opportunities and exciting coffee projects.
+
+</p>
+
+<div class="contact-buttons">
+
+<a href="#">
+GET IN TOUCH
+</a>
+
+<a href="#">
+BOOK CONSULTATION
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
 <footer class="footer">
 
-  <div class="footer-glow-line"></div>
+<div class="footer-top">
 
-  <div class="footer-container">
+<div class="footer-brand">
 
-    <div class="footer-section">
-      <h2>Kenyankrabz</h2>
-      <p>Building systems that brew freedom.</p>
-    </div>
+<h2>KENYANKRABZ</h2>
 
-    <div class="footer-section">
-      <h3>Explore</h3>
-      <a href="#home">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#lab">Lab</a>
-      <a href="#contact">Contact</a>
-    </div>
+<p>
+Brewing legacy through coffee, creativity and excellence.
+</p>
 
-    <div class="footer-section">
-      <h3>Contact</h3>
-      <p>Email: <a href="mailto:kirubieugene@gmail.com">kirubieugene@gmail.com</a></p>
-      <p>WhatsApp: <a href="https://wa.me/254706445569">Chat</a></p>
-    </div>
+</div>
 
-  </div>
+<div class="footer-links">
 
-  <div class="footer-bottom">
-    <p>© 2023 Eugene aka Kenyankrabz</p>
-  </div>
+<h4>QUICK LINKS</h4>
+
+<a href="#">Home</a>
+<a href="#">About</a>
+<a href="#">Projects</a>
+<a href="#">Gallery</a>
+<a href="#">Contact</a>
+
+</div>
+
+<div class="footer-socials">
+
+<h4>CONNECT</h4>
+
+<a href="#">Instagram</a>
+<a href="#">TikTok</a>
+<a href="#">LinkedIn</a>
+<a href="#">WhatsApp</a>
+
+</div>
+
+</div>
+
+<div class="footer-bottom">
+
+<p>
+© 2023 Kenyankrabz / Roots & Roast Co.
+All rights reserved.
+</p>
+
+</div>
 
 </footer>
 
-<script src="js/background.js"></script>
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+<!-- AOS -->
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<!-- VANILLA TILT -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
+<!-- JS -->
 <script src="js/main.js"></script>
-<script src="js/cursor.js"></script>
-<script src="js/scroll.js"></script>
 <script src="js/animations.js"></script>
-<script src="js/projects.js"></script>
-<script src="js/tilt.js"></script>
+<script src="js/scroll.js"></script>
+<script src="js/cursor.js"></script>
 <script src="js/stats.js"></script>
+<script src="js/tilt.js"></script>
+<script src="js/map.js"></script>
 
 </body>
 </html>

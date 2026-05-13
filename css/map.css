@@ -1,0 +1,148 @@
+.map-section {
+  position: relative;
+  background: #171310;
+  color: white;
+  padding-bottom: 40px;
+}
+
+#map {
+  height: 700px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* WRAPPER FOR PROPER LAYOUT */
+.map-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* FIXED CARD (NO OVERLAP BUGS) */
+.map-card {
+  background: rgba(10,10,10,0.92);
+  padding: 35px;
+  width: 320px;
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.map-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+
+.map-card p {
+  line-height: 1.8;
+  margin-bottom: 20px;
+  opacity: .8;
+}
+
+.map-card button {
+  background: #39503D;
+  border: none;
+  padding: 14px 24px;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.map-card button:hover {
+  opacity: 0.85;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .map-card {
+    width: 100%;
+  }
+
+  #map {
+    height: 450px;
+  }
+}
+
+/* LEAFLET MAP */
+.leaflet-container {
+  background: #16120f;
+  font-family: 'Inter', sans-serif;
+}
+
+/* DARK COFFEE TILE STYLE */
+.leaflet-tile {
+  filter:
+    brightness(0.45)
+    contrast(1.2)
+    sepia(0.4)
+    hue-rotate(-10deg)
+    saturate(0.8);
+}
+
+/* COFFEE MARKER */
+.coffee-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker-glow {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #7D2F2F;
+  box-shadow:
+    0 0 10px #7D2F2F,
+    0 0 20px #7D2F2F,
+    0 0 30px rgba(125,47,47,0.7);
+  animation: pulse 2s infinite;
+}
+
+/* PULSE ANIMATION */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: .7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* POPUP STYLING */
+.leaflet-popup-content-wrapper {
+  background: #1d1714;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.leaflet-popup-tip {
+  background: #1d1714;
+}
+
+.leaflet-popup-content {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ZOOM BUTTONS */
+.leaflet-control-zoom a {
+  background: #1d1714 !important;
+  color: white !important;
+  border: none !important;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+}
