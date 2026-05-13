@@ -487,3 +487,36 @@ opacity:.6;
   cursor: pointer;
   z-index: 10;
 }
+.whatsapp-btn{
+background:#39503D;
+color:white;
+padding:15px 28px;
+transition:0.3s ease;
+}
+
+.whatsapp-btn:hover{
+background:#2d4031;
+transform:translateY(-3px);
+}
+
+.email-btn{
+border:1px solid rgba(255,255,255,0.15);
+color:white;
+padding:15px 28px;
+transition:0.3s ease;
+}
+
+.email-btn:hover{
+background:white;
+color:#111;
+transform:translateY(-3px);
+}
+.footer-socials a{
+position:relative;
+transition:0.3s ease;
+}
+
+.footer-socials a:hover{
+color:#C6A56B;
+padding-left:6px;
+}
