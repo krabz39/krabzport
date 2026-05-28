@@ -15,6 +15,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- LEAFLET -->
+ <link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
 
 <link
 rel="stylesheet"
@@ -224,7 +228,6 @@ Building brands and coffee concepts.
 </section>
 
 <!-- ================= CERTIFICATIONS ================= -->
-
 <section class="certifications" id="certifications">
 
 <div class="section-top">
@@ -235,80 +238,155 @@ Building brands and coffee concepts.
 
 </div>
 
+<!-- CERTIFICATE MODAL -->
+
 <div id="certModal" class="cert-modal">
-  <div class="cert-modal-content">
-    <span class="close" onclick="closeCert()">×</span>
-    <iframe id="certFrame"></iframe>
-  </div>
+
+<div class="cert-modal-content">
+
+<span class="close" onclick="closeCert()">×</span>
+
+<iframe id="certFrame"></iframe>
+
 </div>
 
+</div>
+
+<!-- CERTIFICATE FUNCTIONS -->
+
 <script>
+
 function openCert(pdfUrl) {
-  document.getElementById("certFrame").src = pdfUrl;
-  document.getElementById("certModal").style.display = "block";
+
+document.getElementById("certFrame").src = pdfUrl;
+
+document.getElementById("certModal").style.display = "block";
+
 }
 
 function closeCert() {
-  document.getElementById("certModal").style.display = "none";
-  document.getElementById("certFrame").src = "";
+
+document.getElementById("certModal").style.display = "none";
+
+document.getElementById("certFrame").src = "";
+
 }
+
 </script>
 
+<!-- SWIPER -->
 
-<div class="cert-card tilt" onclick="openCert('assets/certificates/CSP Roasting-Foundation.pdf')">
+<div class="swiper certSwiper">
 
-  <div class="cert-thumb">
-    <img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
-    <div class="cert-overlay">
-      <span>View Certificate</span>
-    </div>
-  </div>
+<div class="swiper-wrapper">
 
-  <h3>CSP Roasting-Foundation</h3>
-  <p>SCA</p>
+<!-- CERT 1 -->
 
-</div>
+<div class="swiper-slide">
 
+<div class="cert-card tilt"
+onclick="openCert('assets/certificates/CSP Roasting-Foundation.pdf')">
 
-<div class="cert-card tilt" onclick="openCert('assets/certificates/CSP Roasting-Intermediate.pdf')">
+<div class="cert-thumb">
 
-  <div class="cert-thumb">
-    <img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
-    <div class="cert-overlay">
-      <span>View Certificate</span>
-    </div>
-  </div>
+<img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
 
-  <h3>CSP Roasting-Intermediate</h3>
-  <p>SCA</p>
+<div class="cert-overlay">
+
+<span>View Certificate</span>
 
 </div>
 
-<div class="cert-card tilt" onclick="openCert('assets/certificates/CSP Roasting-Foundation.pdf')">
+</div>
 
-  <div class="cert-thumb">
-    <img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
-    <div class="cert-overlay">
-      <span>View Certificate</span>
-    </div>
-  </div>
+<h3>CSP Roasting Foundation</h3>
 
-  <h3>Skills Professional</h3>
-  <p>SCA</p>
+<p>SCA</p>
 
 </div>
 
-<div class="cert-card tilt" onclick="openCert('assets/certificates/CSP Roasting-Foundation.pdf')">
+</div>
 
-  <div class="cert-thumb">
-    <img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
-    <div class="cert-overlay">
-      <span>View Certificate</span>
-    </div>
-  </div>
+<!-- CERT 2 -->
 
-  <h3> Skills Professional</h3>
-  <p>SCA</p>
+<div class="swiper-slide">
+
+<div class="cert-card tilt"
+onclick="openCert('assets/certificates/CSP Roasting-Intermediate.pdf')">
+
+<div class="cert-thumb">
+
+<img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
+
+<div class="cert-overlay">
+
+<span>View Certificate</span>
+
+</div>
+
+</div>
+
+<h3>CSP Roasting Intermediate</h3>
+
+<p>SCA</p>
+
+</div>
+
+</div>
+
+<!-- CERT 3 -->
+
+<div class="swiper-slide">
+
+<div class="cert-card tilt"
+onclick="openCert('assets/certificates/CSP Brewing-Professional.pdf')">
+
+<div class="cert-thumb">
+
+<img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
+
+<div class="cert-overlay">
+
+<span>View Certificate</span>
+
+</div>
+
+</div>
+
+<h3>Brewing Professional</h3>
+
+<p>SCA</p>
+
+</div>
+
+</div>
+
+<!-- CERT 4 -->
+
+<div class="swiper-slide">
+
+<div class="cert-card tilt"
+onclick="openCert('assets/certificates/CSP Sensory-Professional.pdf')">
+
+<div class="cert-thumb">
+
+<img src="assets/images/certificate-1.jpg" alt="SCA Certificate">
+
+<div class="cert-overlay">
+
+<span>View Certificate</span>
+
+</div>
+
+</div>
+
+<h3>Sensory Professional</h3>
+
+<p>SCA</p>
+
+</div>
+
+</div>
 
 </div>
 
@@ -411,11 +489,17 @@ VIEW ALL PROJECTS
 
 </div>
 
-<div class="project-grid">
+<div class="swiper projectSwiper">
+
+<div class="swiper-wrapper">
+
+<!-- PROJECT 1 -->
+
+<div class="swiper-slide">
 
 <div class="project-card tilt">
 
-<img src="assets/images/project-1.jpg">
+<img src="assets/images/project-1.jpg" alt="Project">
 
 <h3>Signature Menu</h3>
 
@@ -423,9 +507,15 @@ VIEW ALL PROJECTS
 
 </div>
 
+</div>
+
+<!-- PROJECT 2 -->
+
+<div class="swiper-slide">
+
 <div class="project-card tilt">
 
-<img src="assets/images/project-2.jpg">
+<img src="assets/images/project-2.jpg" alt="Project">
 
 <h3>Roast Profile</h3>
 
@@ -433,9 +523,15 @@ VIEW ALL PROJECTS
 
 </div>
 
+</div>
+
+<!-- PROJECT 3 -->
+
+<div class="swiper-slide">
+
 <div class="project-card tilt">
 
-<img src="assets/images/project-3.jpg">
+<img src="assets/images/project-3.jpg" alt="Project">
 
 <h3>Café Concept</h3>
 
@@ -443,13 +539,23 @@ VIEW ALL PROJECTS
 
 </div>
 
+</div>
+
+<!-- PROJECT 4 -->
+
+<div class="swiper-slide">
+
 <div class="project-card tilt">
 
-<img src="assets/images/project-4.jpg">
+<img src="assets/images/project-4.jpg" alt="Project">
 
 <h3>Barista Training</h3>
 
 <p>Workshops</p>
+
+</div>
+
+</div>
 
 </div>
 
@@ -467,25 +573,80 @@ VIEW ALL PROJECTS
 
 </div>
 
-<div class="gallery-grid">
+<div class="swiper gallerySwiper">
 
-<img src="assets/images/gallery-1.jpg">
-<img src="assets/images/gallery-2.jpg">
-<img src="assets/images/gallery-3.jpg">
-<img src="assets/images/gallery-4.jpg">
-<img src="assets/images/gallery-5.jpg">
-<img src="assets/images/gallery-6.jpg">
-<img src="assets/images/gallery-7.jpg">
-<img src="assets/images/gallery-8.jpg">
-<img src="assets/images/gallery-9.jpg">
-<img src="assets/images/gallery-10.jpg">
-<img src="assets/images/gallery-11.jpg">
-<img src="assets/images/gallery-12.jpg">
-<img src="assets/images/gallery-13.jpg">
-<img src="assets/images/gallery-14.jpg">
-<img src="assets/images/gallery-15.jpg">
-<img src="assets/images/gallery-16.jpg">
-<img src="assets/images/gallery-17.jpg">
+<div class="swiper-wrapper">
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-1.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-2.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-3.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-4.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-5.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-6.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-7.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-8.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-9.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-10.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-11.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-12.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-13.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-14.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-15.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-16.jpg" alt="Gallery">
+</div>
+
+<div class="swiper-slide">
+<img src="assets/images/gallery-17.jpg" alt="Gallery">
+</div>
+
+</div>
+
 </div>
 
 </section>
@@ -508,7 +669,7 @@ consulting opportunities and exciting coffee projects.
 <div class="contact-buttons">
 
 <a 
-href="https://wa.me/+254706445569" 
+href="https://wa.me/254706445569" 
 target="_blank"
 class="whatsapp-btn"
 >
@@ -516,7 +677,7 @@ GET IN TOUCH
 </a>
 
 <a 
-href="mailto:kirubieugene@gmailcom?subject=Coffee Consultation Booking"
+href="mailto:kirubieugene@gmail.com?subject=Coffee Consultation Booking"
 class="email-btn"
 >
 BOOK CONSULTATION
@@ -558,7 +719,6 @@ Brewing legacy through coffee, creativity and excellence.
 
 <div class="footer-socials">
 
-<div class="footer-socials">
 
 <h4>CONNECT</h4>
 
@@ -614,7 +774,14 @@ src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 <!-- VANILLA TILT -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
-<!-- JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <script src="js/main.js"></script>
 <script src="js/animations.js"></script>
 <script src="js/scroll.js"></script>
@@ -622,6 +789,8 @@ src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 <script src="js/stats.js"></script>
 <script src="js/tilt.js"></script>
 <script src="js/map.js"></script>
+
+<script src="js/slider.js"></script>
 
 </body>
 </html>
