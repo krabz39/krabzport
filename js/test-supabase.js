@@ -5,7 +5,11 @@ async function testSupabaseConnection() {
         .limit(1);
 
     if (error) {
-        console.error("❌ Supabase connection failed:", error);
+        console.error("❌ Supabase connection failed");
+        console.error("Message:", error.message);
+        console.error("Details:", error.details);
+        console.error("Hint:", error.hint);
+        console.error("Code:", error.code);
         return;
     }
 

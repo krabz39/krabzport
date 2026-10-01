@@ -1,0 +1,6032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kenyankrabz CMS</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --brown: #2B1D17;
+            --brown-dark: #1d130f;
+            --cream: #F5EFE6;
+            --green: #39503D;
+            --red: #7D2F2F;
+            --gold: #C6A56B;
+            --white: #ffffff;
+            --muted: #766d66;
+            --border: #e5ddd3;
+            --success: #2f6b45;
+            --danger: #9c3030;
+            --shadow: 0 12px 40px rgba(43,29,23,.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: #f8f5f0;
+            color: var(--brown);
+            font-family: Inter, sans-serif;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: var(--brown);
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            padding: 30px 24px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+
+        .brand-mark {
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--gold);
+            display: grid;
+            place-items: center;
+            color: var(--gold);
+            font-family: Georgia, serif;
+            font-size: 24px;
+            margin-bottom: 14px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 27px;
+            letter-spacing: 1px;
+        }
+
+        .brand span {
+            display: block;
+            margin-top: 5px;
+            font-size: 9px;
+            letter-spacing: 1.8px;
+            color: #cbbfb5;
+        }
+
+        .nav {
+            padding: 20px 12px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav button {
+            width: 100%;
+            background: transparent;
+            border: 0;
+            color: #d7cec7;
+            padding: 13px 14px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            transition: .2s;
+        }
+
+        .nav button:hover,
+        .nav button.active {
+            background: rgba(255,255,255,.09);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 22px;
+            text-align: center;
+            opacity: .8;
+        }
+
+        .sidebar-bottom {
+            padding: 18px;
+            border-top: 1px solid rgba(255,255,255,.1);
+        }
+
+        .logout {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,.15);
+            background: transparent;
+            color: white;
+            padding: 11px;
+            border-radius: 7px;
+        }
+
+        .logout:hover {
+            background: rgba(255,255,255,.08);
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            min-width: 0;
+        }
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+        }
+
+        .topbar-left h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .topbar-left p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .admin-badge {
+            background: var(--cream);
+            padding: 8px 13px;
+            border-radius: 30px;
+            font-size: 12px;
+        }
+
+        .content {
+            padding: 30px;
+            max-width: 1600px;
+            margin: auto;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* =====================================================
+           DASHBOARD
+        ===================================================== */
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 40px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+            margin: 7px 0 0;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card small {
+            color: var(--muted);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-card strong {
+            font-size: 32px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 19px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .panel-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .panel-body {
+            padding: 22px;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+            border: 0;
+            border-radius: 7px;
+            padding: 10px 15px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: .2s;
+        }
+
+        .btn-primary {
+            background: var(--brown);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--green);
+        }
+
+        .btn-secondary {
+            background: var(--cream);
+            color: var(--brown);
+        }
+
+        .btn-danger {
+            background: #f9e7e7;
+            color: var(--danger);
+        }
+
+        .btn-success {
+            background: #e6f2ea;
+            color: var(--success);
+        }
+
+        .btn-small {
+            padding: 7px 10px;
+            font-size: 11px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        /* =====================================================
+           FORMS
+        ===================================================== */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 18px;
+        }
+
+        .form-grid.three {
+            grid-template-columns: repeat(3, minmax(0,1fr));
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--brown);
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--brown);
+            padding: 11px 12px;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--gold);
+        }
+
+        .form-help {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        .form-section-title {
+            margin: 28px 0 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .form-section-title:first-child {
+            margin-top: 0;
+        }
+
+        /* =====================================================
+           LISTS
+        ===================================================== */
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .item {
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: #fff;
+        }
+
+        .item-image {
+            width: 75px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: var(--cream);
+            flex-shrink: 0;
+        }
+
+        .item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-content h4 {
+            margin: 0 0 5px;
+            font-size: 14px;
+        }
+
+        .item-content p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .item-meta {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        .empty {
+            padding: 35px;
+            text-align: center;
+            color: var(--muted);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+        }
+
+        /* =====================================================
+           SECTION MANAGER
+        ===================================================== */
+
+        .section-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            margin-bottom: 10px;
+            background: white;
+        }
+
+        .drag {
+            font-size: 20px;
+            color: #aaa;
+            cursor: grab;
+        }
+
+        .section-info {
+            flex: 1;
+        }
+
+        .section-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .section-info span {
+            display: block;
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .visibility {
+            border: 0;
+            padding: 7px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .visible {
+            background: #e5f2e8;
+            color: var(--success);
+        }
+
+        .hidden {
+            background: #eee;
+            color: #777;
+        }
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(20,13,10,.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            z-index: 5000;
+        }
+
+        .modal-backdrop.show {
+            display: flex;
+        }
+
+        .modal {
+            width: min(850px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 13px;
+            box-shadow: 0 25px 100px rgba(0,0,0,.3);
+        }
+
+        .modal-header {
+            padding: 20px 23px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .modal-close {
+            border: 0;
+            background: transparent;
+            font-size: 25px;
+            color: var(--muted);
+        }
+
+        .modal-body {
+            padding: 23px;
+        }
+
+        .modal-footer {
+            padding: 17px 23px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 9px;
+        }
+
+        /* =====================================================
+           IMAGE PREVIEW
+        ===================================================== */
+
+        .image-preview {
+            margin-top: 10px;
+            width: 150px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            display: none;
+            border: 1px solid var(--border);
+        }
+
+        .image-preview.show {
+            display: block;
+        }
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            min-width: 280px;
+            max-width: 420px;
+            background: var(--brown);
+            color: white;
+            padding: 15px 18px;
+            border-radius: 8px;
+            box-shadow: 0 15px 40px rgba(0,0,0,.2);
+            transform: translateY(120px);
+            opacity: 0;
+            transition: .3s;
+            z-index: 9000;
+            font-size: 13px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid #79bd8e;
+        }
+
+        .toast.error {
+            border-left: 4px solid #e37a7a;
+        }
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .loading {
+            padding: 40px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--border);
+            border-top-color: var(--brown);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        .mobile-menu {
+            display: none;
+            border: 0;
+            background: transparent;
+            font-size: 22px;
+        }
+
+        @media(max-width:1100px) {
+
+            .cards {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .form-grid.three {
+                grid-template-columns: repeat(2,1fr);
+            }
+        }
+
+        @media(max-width:800px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: .25s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-grid,
+            .form-grid.three {
+                grid-template-columns: 1fr;
+            }
+
+            .item {
+                align-items: flex-start;
+            }
+
+            .item .actions {
+                flex-direction: column;
+            }
+
+            .section-item {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media(max-width:520px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title h1 {
+                font-size: 32px;
+            }
+
+            .admin-badge {
+                display: none;
+            }
+
+            .item {
+                flex-wrap: wrap;
+            }
+
+            .item-image {
+                width: 100%;
+                height: 160px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-mark">K</div>
+
+            <h1>KENYANKRABZ</h1>
+
+            <span>COFFEE PORTFOLIO CMS</span>
+
+        </div>
+
+        <nav class="nav">
+
+            <button class="nav-btn active" data-view="dashboard">
+                <span class="nav-icon">⌂</span>
+                Dashboard
+            </button>
+
+            <button class="nav-btn" data-view="sections">
+                <span class="nav-icon">☷</span>
+                Sections
+            </button>
+
+            <button class="nav-btn" data-view="site">
+                <span class="nav-icon">◉</span>
+                Site / Hero
+            </button>
+
+            <button class="nav-btn" data-view="about">
+                <span class="nav-icon">A</span>
+                About
+            </button>
+
+            <button class="nav-btn" data-view="stats">
+                <span class="nav-icon">↗</span>
+                Statistics
+            </button>
+
+            <button class="nav-btn" data-view="certificates">
+                <span class="nav-icon">▣</span>
+                Certifications
+            </button>
+
+            <button class="nav-btn" data-view="timeline">
+                <span class="nav-icon">◌</span>
+                Experience
+            </button>
+
+            <button class="nav-btn" data-view="origins">
+                <span class="nav-icon">◎</span>
+                Coffee Map
+            </button>
+
+            <button class="nav-btn" data-view="projects">
+                <span class="nav-icon">◆</span>
+                Projects
+            </button>
+
+            <button class="nav-btn" data-view="gallery">
+                <span class="nav-icon">▧</span>
+                Gallery
+            </button>
+
+            <button class="nav-btn" data-view="social">
+                <span class="nav-icon">◈</span>
+                Social Links
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <button class="logout" id="logoutBtn">
+                Sign Out
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="mobile-menu" id="mobileMenu">
+                    ☰
+                </button>
+
+                <h2 id="pageHeading">
+                    Dashboard
+                </h2>
+
+                <p>
+                    Manage your Kenyankrabz coffee portfolio
+                </p>
+
+            </div>
+
+            <div class="admin-badge" id="adminEmail">
+                Loading...
+            </div>
+
+        </header>
+
+
+        <div class="content">
+
+
+            <!-- =================================================
+                 DASHBOARD
+            ================================================== -->
+
+            <section class="view active" id="view-dashboard">
+
+                <div class="page-title">
+
+                    <h1>Portfolio CMS</h1>
+
+                    <p>
+                        Everything on your portfolio can be managed from here.
+                    </p>
+
+                </div>
+
+
+                <div class="cards">
+
+                    <div class="stat-card">
+                        <small>Sections</small>
+                        <strong id="countSections">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <small>Certifications</small>
+                        <strong id="countCertificates">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <small>Projects</small>
+                        <strong id="countProjects">0</strong>
+                    </div>
+
+                    <div class="stat-card">
+                        <small>Gallery</small>
+                        <strong id="countGallery">0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="actions">
+
+                            <button class="btn btn-primary"
+                                    onclick="openView('sections')">
+                                Manage Sections
+                            </button>
+
+                            <button class="btn btn-secondary"
+                                    onclick="openView('certificates')">
+                                Add Certificate
+                            </button>
+
+                            <button class="btn btn-secondary"
+                                    onclick="openView('projects')">
+                                Add Project
+                            </button>
+
+                            <button class="btn btn-secondary"
+                                    onclick="openView('gallery')">
+                                Add Gallery Image
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h3>CMS Status</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="cmsStatus">
+
+                            <div class="loading">
+
+                                <div class="spinner"></div>
+
+                                Checking CMS...
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SECTIONS
+            ================================================== -->
+
+            <section class="view" id="view-sections">
+
+                <div class="page-title">
+
+                    <h1>Sections</h1>
+
+                    <p>
+                        Add, remove, hide, show and reorder portfolio sections.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Portfolio Sections</h3>
+
+                        <button class="btn btn-primary"
+                                onclick="openSectionModal()">
+                            + Add Section
+                        </button>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="sectionsList"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SITE / HERO
+            ================================================== -->
+
+            <section class="view" id="view-site">
+
+                <div class="page-title">
+
+                    <h1>Site / Hero</h1>
+
+                    <p>
+                        Control the identity, homepage introduction,
+                        social links, contact information and images.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Site & Hero Settings</h3>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <form id="siteForm">
+
+                            <input type="hidden" id="siteId">
+
+
+                            <!-- ================= SITE IDENTITY ================= -->
+
+                            <h4 class="form-section-title">
+                                Site Identity
+                            </h4>
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label>Site Name</label>
+
+                                    <input
+                                        id="siteName"
+                                        placeholder="Kenyankrabz">
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>Tagline</label>
+
+                                    <input
+                                        id="siteTagline"
+                                        placeholder="BARISTA • ROASTER • CONNOISSEUR">
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ================= HERO CONTENT ================= -->
+
+                            <h4 class="form-section-title">
+                                Homepage Introduction
+                            </h4>
+
+                            <div class="form-grid">
+
+                                <div class="form-group full">
+
+                                    <label>Hero Mini Title</label>
+
+                                    <input
+                                        id="siteHeroMiniTitle"
+                                        placeholder="BREWING LEGACY THROUGH">
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label>Hero Main Title</label>
+
+                                    <input
+                                        id="siteHeroTitle"
+                                        placeholder="COFFEE, CREATIVITY & EXCELLENCE">
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label>Hero Description</label>
+
+                                    <textarea
+                                        id="siteHeroDescription"
+                                        rows="5"
+                                        placeholder="Write your homepage introduction..."></textarea>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>Primary Button Text</label>
+
+                                    <input
+                                        id="siteHeroPrimaryText"
+                                        placeholder="EXPLORE MY JOURNEY">
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>Primary Button URL</label>
+
+                                    <input
+                                        id="siteHeroPrimaryUrl"
+                                        placeholder="#about">
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>Secondary Button Text</label>
+
+                                    <input
+                                        id="siteHeroSecondaryText"
+                                        placeholder="VIEW CERTIFICATIONS">
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>Secondary Button URL</label>
+
+                                    <input
+                                        id="siteHeroSecondaryUrl"
+                                        placeholder="#certifications">
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ================= CONTACT ================= -->
+
+                            <h4 class="form-section-title">
+                                Contact Information
+                            </h4>
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label>Email</label>
+
+                                    <input
+                                        id="siteEmail"
+                                        type="email"
+                                        placeholder="your@email.com">
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>WhatsApp Number</label>
+
+                                    <input
+                                        id="siteWhatsapp"
+                                        placeholder="254706445569">
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ================= SOCIALS ================= -->
+
+                            <h4 class="form-section-title">
+                                Homepage Social Links
+                            </h4>
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label>Instagram URL</label>
+
+                                    <input
+                                        id="siteInstagram"
+                                        placeholder="https://instagram.com/kenyankrabz">
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>TikTok URL</label>
+
+                                    <input
+                                        id="siteTiktok"
+                                        placeholder="https://tiktok.com/@kenyankrabz">
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label>LinkedIn URL</label>
+
+                                    <input
+                                        id="siteLinkedin"
+                                        placeholder="https://linkedin.com/in/eugenekirubi">
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ================= IMAGES ================= -->
+
+                            <h4 class="form-section-title">
+                                Portfolio Images
+                            </h4>
+
+                            <div class="form-grid">
+
+                                <div class="form-group full">
+
+                                    <label>Profile Image URL</label>
+
+                                    <input
+                                        id="siteProfileImage">
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label>Hero Image URL</label>
+
+                                    <input
+                                        id="siteHeroImage">
+
+                                </div>
+
+                            </div>
+
+
+                            <br>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary">
+
+                                Save Site & Hero Settings
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ABOUT
+            ================================================== -->
+
+            <section class="view" id="view-about">
+
+                <div class="page-title">
+
+                    <h1>About</h1>
+
+                    <p>
+                        Edit the main About section of your portfolio.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>About Content</h3>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <form id="aboutForm">
+
+                            <input type="hidden" id="aboutId">
+
+                            <div class="form-grid">
+
+                                <div class="form-group full">
+
+                                    <label>Title</label>
+
+                                    <input id="aboutTitle">
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label>Description</label>
+
+                                    <textarea id="aboutDescription"></textarea>
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label>Image URL</label>
+
+                                    <input id="aboutImage">
+
+                                    <img
+                                        id="aboutPreview"
+                                        class="image-preview">
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label>Upload New Image</label>
+
+                                    <input
+                                        id="aboutImageFile"
+                                        type="file"
+                                        accept="image/*">
+
+                                    <div class="form-help">
+                                        Uploading an image replaces the image URL.
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <br>
+
+                            <button class="btn btn-primary">
+                                Save About
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 STATS
+            ================================================== -->
+
+            <section class="view" id="view-stats">
+
+                <div class="page-title">
+
+                    <h1>Statistics</h1>
+
+                    <p>
+                        Add, edit, delete and reorder your portfolio statistics.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Statistics</h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openStatModal()">
+
+                            + Add Statistic
+
+                        </button>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="statsList"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CERTIFICATES
+            ================================================== -->
+
+            <section class="view" id="view-certificates">
+
+                <div class="page-title">
+
+                    <h1>Certifications</h1>
+
+                    <p>
+                        Manage certificates, images, PDF files and dates.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Certificates</h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openCertificateModal()">
+
+                            + Add Certificate
+
+                        </button>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="certificatesList"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TIMELINE
+            ================================================== -->
+
+            <section class="view" id="view-timeline">
+
+                <div class="page-title">
+
+                    <h1>Experience</h1>
+
+                    <p>
+                        Manage your coffee journey timeline.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Experience Timeline</h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openTimelineModal()">
+
+                            + Add Experience
+
+                        </button>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="timelineList"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 ORIGINS
+            ================================================== -->
+
+            <section class="view" id="view-origins">
+
+                <div class="page-title">
+
+                    <h1>Coffee Map</h1>
+
+                    <p>
+                        Manage coffee countries, regions, coordinates and tasting information.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Coffee Origins</h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openOriginModal()">
+
+                            + Add Origin
+
+                        </button>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="originsList"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PROJECTS
+            ================================================== -->
+
+            <section class="view" id="view-projects">
+
+                <div class="page-title">
+
+                    <h1>Projects</h1>
+
+                    <p>
+                        Manage your featured projects and project images.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Projects</h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openProjectModal()">
+
+                            + Add Project
+
+                        </button>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="projectsList"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 GALLERY
+            ================================================== -->
+
+            <section class="view" id="view-gallery">
+
+                <div class="page-title">
+
+                    <h1>Gallery</h1>
+
+                    <p>
+                        Add, edit, reorder and remove portfolio gallery images.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Gallery</h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openGalleryModal()">
+
+                            + Add Image
+
+                        </button>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="galleryList"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SOCIAL
+            ================================================== -->
+
+            <section class="view" id="view-social">
+
+                <div class="page-title">
+
+                    <h1>Social Links</h1>
+
+                    <p>
+                        Manage your social and external portfolio links.
+                    </p>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h3>Social Links</h3>
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="openSocialModal()">
+
+                            + Add Link
+
+                        </button>
+
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div id="socialList"></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL
+========================================================= -->
+
+<div class="modal-backdrop" id="modalBackdrop">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="modalTitle">
+                Edit
+            </h3>
+
+            <button
+                class="modal-close"
+                onclick="closeModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+        <div
+            class="modal-body"
+            id="modalBody">
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                class="btn btn-secondary"
+                onclick="closeModal()">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="btn btn-primary"
+                id="modalSave">
+
+                Save
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   GLOBALS
+========================================================= */
+
+let currentUser = null;
+
+let currentModalSave = null;
+
+const tables = [
+    "sections",
+    "certificates",
+    "projects",
+    "gallery"
+];
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    setupNavigation();
+
+    setupMobileMenu();
+
+    await checkAuth();
+
+    await loadEverything();
+
+});
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+async function checkAuth() {
+
+    const {
+        data: { user },
+        error
+    } = await supabaseClient.auth.getUser();
+
+
+    if (error || !user) {
+
+        window.location.href = "index.html";
+
+        return;
+
+    }
+
+
+    currentUser = user;
+
+
+    document.getElementById("adminEmail").textContent =
+        user.email || "Admin";
+
+}
+
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener(
+        "click",
+        async () => {
+
+            await supabaseClient.auth.signOut();
+
+            window.location.href = "index.html";
+
+        }
+    );
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function setupNavigation() {
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    openView(
+                        button.dataset.view
+                    );
+
+                }
+            );
+
+        });
+
+}
+
+
+function openView(viewName) {
+
+    document
+        .querySelectorAll(".view")
+        .forEach(view => {
+
+            view.classList.remove("active");
+
+        });
+
+
+    const view =
+        document.getElementById(
+            `view-${viewName}`
+        );
+
+
+    if (view) {
+
+        view.classList.add("active");
+
+    }
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.view === viewName
+            );
+
+        });
+
+
+    const labels = {
+
+        dashboard: "Dashboard",
+        sections: "Sections",
+        site: "Site / Hero",
+        about: "About",
+        stats: "Statistics",
+        certificates: "Certifications",
+        timeline: "Experience",
+        origins: "Coffee Map",
+        projects: "Projects",
+        gallery: "Gallery",
+        social: "Social Links"
+
+    };
+
+
+    document.getElementById(
+        "pageHeading"
+    ).textContent =
+        labels[viewName] || "Dashboard";
+
+
+    document
+        .getElementById("sidebar")
+        .classList.remove("open");
+
+}
+
+
+function setupMobileMenu() {
+
+    document
+        .getElementById("mobileMenu")
+        .addEventListener(
+            "click",
+            () => {
+
+                document
+                    .getElementById("sidebar")
+                    .classList.toggle("open");
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   LOAD EVERYTHING
+========================================================= */
+
+async function loadEverything() {
+
+    try {
+
+        await Promise.all([
+
+            loadCounts(),
+            loadSite(),
+            loadAbout(),
+            loadStats(),
+            loadCertificates(),
+            loadTimeline(),
+            loadOrigins(),
+            loadProjects(),
+            loadGallery(),
+            loadSocial(),
+            loadSections()
+
+        ]);
+
+
+        document.getElementById(
+            "cmsStatus"
+        ).innerHTML = `
+
+            <div style="
+                padding:15px;
+                background:#e7f3ea;
+                color:#2f6b45;
+                border-radius:8px;
+            ">
+
+                ✓ CMS connected successfully.
+                Your admin account can manage portfolio content.
+
+            </div>
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        document.getElementById(
+            "cmsStatus"
+        ).innerHTML = `
+
+            <div style="
+                padding:15px;
+                background:#fae9e9;
+                color:#9c3030;
+                border-radius:8px;
+            ">
+
+                CMS connection error.
+                Check the browser console for details.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   COUNTS
+========================================================= */
+
+async function loadCounts() {
+
+    const [
+        sections,
+        certificates,
+        projects,
+        gallery
+    ] = await Promise.all([
+
+        getCount("sections"),
+        getCount("certificates"),
+        getCount("projects"),
+        getCount("gallery")
+
+    ]);
+
+
+    document.getElementById(
+        "countSections"
+    ).textContent = sections;
+
+
+    document.getElementById(
+        "countCertificates"
+    ).textContent = certificates;
+
+
+    document.getElementById(
+        "countProjects"
+    ).textContent = projects;
+
+
+    document.getElementById(
+        "countGallery"
+    ).textContent = gallery;
+
+}
+
+
+async function getCount(table) {
+
+    const {
+        count,
+        error
+    } = await supabaseClient
+        .from(table)
+        .select("*", {
+            count: "exact",
+            head: true
+        });
+
+
+    if (error) {
+
+        console.error(
+            table,
+            error
+        );
+
+        return 0;
+
+    }
+
+
+    return count || 0;
+
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+function toast(
+    message,
+    type = "success"
+) {
+
+    const element =
+        document.getElementById("toast");
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        `toast show ${type}`;
+
+
+    setTimeout(
+        () => {
+
+            element.classList.remove(
+                "show"
+            );
+
+        },
+        3200
+    );
+
+}
+
+
+function openModal(
+    title,
+    html,
+    saveFunction
+) {
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        title;
+
+
+    document.getElementById(
+        "modalBody"
+    ).innerHTML =
+        html;
+
+
+    currentModalSave =
+        saveFunction;
+
+
+    document
+        .getElementById("modalBackdrop")
+        .classList.add("show");
+
+}
+
+
+document
+    .getElementById("modalSave")
+    .addEventListener(
+        "click",
+        async () => {
+
+            if (currentModalSave) {
+
+                await currentModalSave();
+
+            }
+
+        }
+    );
+
+
+function closeModal() {
+
+    document
+        .getElementById("modalBackdrop")
+        .classList.remove("show");
+
+
+    currentModalSave = null;
+
+}
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+async function uploadFile(
+    file,
+    bucket,
+    folder
+) {
+
+    if (!file) {
+
+        return null;
+
+    }
+
+
+    const safeName =
+        file.name
+            .replace(
+                /[^a-zA-Z0-9._-]/g,
+                "-"
+            )
+            .replace(
+                /\s+/g,
+                "-"
+            );
+
+
+    const unique =
+        `${Date.now()}-${Math.random()
+            .toString(36)
+            .substring(2, 9)}`;
+
+
+    const path =
+        `${folder}/${unique}-${safeName}`;
+
+
+    const {
+        error
+    } = await supabaseClient
+        .storage
+        .from(bucket)
+        .upload(
+            path,
+            file,
+            {
+                cacheControl: "3600",
+                upsert: false
+            }
+        );
+
+
+    if (error) {
+
+        throw error;
+
+    }
+
+
+    const {
+        data
+    } =
+        supabaseClient
+            .storage
+            .from(bucket)
+            .getPublicUrl(path);
+
+
+    return data.publicUrl;
+
+}
+
+
+/* =========================================================
+   SITE / HERO
+========================================================= */
+
+async function loadSite() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("site_settings")
+        .select("*")
+        .limit(1);
+
+
+    if (error) {
+
+        console.error(error);
+
+        toast(
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const row =
+        data?.[0];
+
+
+    if (!row) {
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "siteId"
+    ).value =
+        row.id || "";
+
+
+    document.getElementById(
+        "siteName"
+    ).value =
+        row.site_name || "";
+
+
+    document.getElementById(
+        "siteTagline"
+    ).value =
+        row.tagline || "";
+
+
+    document.getElementById(
+        "siteEmail"
+    ).value =
+        row.email || "";
+
+
+    document.getElementById(
+        "siteWhatsapp"
+    ).value =
+        row.whatsapp || "";
+
+
+    document.getElementById(
+        "siteInstagram"
+    ).value =
+        row.instagram || "";
+
+
+    document.getElementById(
+        "siteTiktok"
+    ).value =
+        row.tiktok || "";
+
+
+    document.getElementById(
+        "siteLinkedin"
+    ).value =
+        row.linkedin || "";
+
+
+    document.getElementById(
+        "siteProfileImage"
+    ).value =
+        row.profile_image || "";
+
+
+    document.getElementById(
+        "siteHeroImage"
+    ).value =
+        row.hero_image || "";
+
+
+    /* ================= HERO ================= */
+
+    document.getElementById(
+        "siteHeroMiniTitle"
+    ).value =
+        row.hero_mini_title ||
+        "BREWING LEGACY THROUGH";
+
+
+    document.getElementById(
+        "siteHeroTitle"
+    ).value =
+        row.hero_title ||
+        "COFFEE, CREATIVITY & EXCELLENCE";
+
+
+    document.getElementById(
+        "siteHeroDescription"
+    ).value =
+        row.hero_description ||
+        "";
+
+
+    document.getElementById(
+        "siteHeroPrimaryText"
+    ).value =
+        row.hero_primary_text ||
+        "EXPLORE MY JOURNEY";
+
+
+    document.getElementById(
+        "siteHeroPrimaryUrl"
+    ).value =
+        row.hero_primary_url ||
+        "#about";
+
+
+    document.getElementById(
+        "siteHeroSecondaryText"
+    ).value =
+        row.hero_secondary_text ||
+        "VIEW CERTIFICATIONS";
+
+
+    document.getElementById(
+        "siteHeroSecondaryUrl"
+    ).value =
+        row.hero_secondary_url ||
+        "#certifications";
+
+}
+
+
+/* =========================================================
+   SAVE SITE / HERO
+========================================================= */
+
+document
+    .getElementById("siteForm")
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            try {
+
+                const siteId =
+                    document.getElementById(
+                        "siteId"
+                    ).value;
+
+
+                const payload = {
+
+                    site_name:
+                        document
+                            .getElementById(
+                                "siteName"
+                            )
+                            .value
+                            .trim(),
+
+
+                    tagline:
+                        document
+                            .getElementById(
+                                "siteTagline"
+                            )
+                            .value
+                            .trim(),
+
+
+                    email:
+                        document
+                            .getElementById(
+                                "siteEmail"
+                            )
+                            .value
+                            .trim(),
+
+
+                    whatsapp:
+                        document
+                            .getElementById(
+                                "siteWhatsapp"
+                            )
+                            .value
+                            .trim(),
+
+
+                    instagram:
+                        document
+                            .getElementById(
+                                "siteInstagram"
+                            )
+                            .value
+                            .trim(),
+
+
+                    tiktok:
+                        document
+                            .getElementById(
+                                "siteTiktok"
+                            )
+                            .value
+                            .trim(),
+
+
+                    linkedin:
+                        document
+                            .getElementById(
+                                "siteLinkedin"
+                            )
+                            .value
+                            .trim(),
+
+
+                    profile_image:
+                        document
+                            .getElementById(
+                                "siteProfileImage"
+                            )
+                            .value
+                            .trim(),
+
+
+                    hero_image:
+                        document
+                            .getElementById(
+                                "siteHeroImage"
+                            )
+                            .value
+                            .trim(),
+
+
+                    hero_mini_title:
+                        document
+                            .getElementById(
+                                "siteHeroMiniTitle"
+                            )
+                            .value
+                            .trim(),
+
+
+                    hero_title:
+                        document
+                            .getElementById(
+                                "siteHeroTitle"
+                            )
+                            .value
+                            .trim(),
+
+
+                    hero_description:
+                        document
+                            .getElementById(
+                                "siteHeroDescription"
+                            )
+                            .value
+                            .trim(),
+
+
+                    hero_primary_text:
+                        document
+                            .getElementById(
+                                "siteHeroPrimaryText"
+                            )
+                            .value
+                            .trim(),
+
+
+                    hero_primary_url:
+                        document
+                            .getElementById(
+                                "siteHeroPrimaryUrl"
+                            )
+                            .value
+                            .trim(),
+
+
+                    hero_secondary_text:
+                        document
+                            .getElementById(
+                                "siteHeroSecondaryText"
+                            )
+                            .value
+                            .trim(),
+
+
+                    hero_secondary_url:
+                        document
+                            .getElementById(
+                                "siteHeroSecondaryUrl"
+                            )
+                            .value
+                            .trim(),
+
+
+                    updated_at:
+                        new Date().toISOString()
+
+                };
+
+
+                let result;
+
+
+                if (siteId) {
+
+                    result =
+                        await supabaseClient
+                            .from("site_settings")
+                            .update(payload)
+                            .eq(
+                                "id",
+                                siteId
+                            );
+
+                } else {
+
+                    result =
+                        await supabaseClient
+                            .from("site_settings")
+                            .insert(
+                                payload
+                            );
+
+                }
+
+
+                if (result.error) {
+
+                    throw result.error;
+
+                }
+
+
+                toast(
+                    "Site & Hero settings saved."
+                );
+
+
+                await loadSite();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                toast(
+                    error.message ||
+                    "Could not save Site & Hero settings.",
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+async function loadAbout() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("about")
+        .select("*")
+        .limit(1);
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const row =
+        data?.[0];
+
+
+    if (!row) {
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "aboutId"
+    ).value =
+        row.id || "";
+
+
+    document.getElementById(
+        "aboutTitle"
+    ).value =
+        row.title || "";
+
+
+    document.getElementById(
+        "aboutDescription"
+    ).value =
+        row.description || "";
+
+
+    document.getElementById(
+        "aboutImage"
+    ).value =
+        row.image || "";
+
+
+    updateAboutPreview();
+
+}
+
+
+function updateAboutPreview() {
+
+    const url =
+        document
+            .getElementById(
+                "aboutImage"
+            )
+            .value
+            .trim();
+
+
+    const preview =
+        document.getElementById(
+            "aboutPreview"
+        );
+
+
+    if (url) {
+
+        preview.src =
+            url;
+
+        preview.classList.add(
+            "show"
+        );
+
+    } else {
+
+        preview.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+document
+    .getElementById("aboutImage")
+    .addEventListener(
+        "input",
+        updateAboutPreview
+    );
+
+
+document
+    .getElementById("aboutForm")
+    .addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const id =
+                document.getElementById(
+                    "aboutId"
+                ).value;
+
+
+            let imageUrl =
+                document
+                    .getElementById(
+                        "aboutImage"
+                    )
+                    .value
+                    .trim();
+
+
+            const file =
+                document
+                    .getElementById(
+                        "aboutImageFile"
+                    )
+                    .files[0];
+
+
+            try {
+
+                if (file) {
+
+                    imageUrl =
+                        await uploadFile(
+                            file,
+                            "portfolio-images",
+                            "about"
+                        );
+
+                }
+
+
+                const payload = {
+
+                    title:
+                        document
+                            .getElementById(
+                                "aboutTitle"
+                            )
+                            .value
+                            .trim(),
+
+
+                    description:
+                        document
+                            .getElementById(
+                                "aboutDescription"
+                            )
+                            .value
+                            .trim(),
+
+
+                    image:
+                        imageUrl,
+
+
+                    updated_at:
+                        new Date().toISOString()
+
+                };
+
+
+                let result;
+
+
+                if (id) {
+
+                    result =
+                        await supabaseClient
+                            .from("about")
+                            .update(payload)
+                            .eq(
+                                "id",
+                                id
+                            );
+
+                } else {
+
+                    result =
+                        await supabaseClient
+                            .from("about")
+                            .insert(
+                                payload
+                            );
+
+                }
+
+
+                if (result.error) {
+
+                    throw result.error;
+
+                }
+
+
+                toast(
+                    "About section saved."
+                );
+
+
+                await loadAbout();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                toast(
+                    error.message ||
+                    "Could not save About.",
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+async function loadStats() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("stats")
+        .select("*")
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "statsList"
+        );
+
+
+    if (!data?.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No statistics yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        `<div class="item-list">
+
+            ${data.map(row => `
+
+                <div class="item">
+
+                    <div class="item-content">
+
+                        <h4>
+                            ${escapeHTML(row.label)}
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(row.value)}
+                            ${escapeHTML(row.suffix || "")}
+                        </p>
+
+                        <div class="item-meta">
+                            Order:
+                            ${row.display_order ?? 0}
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-secondary btn-small"
+                            onclick='openStatModal(${JSON.stringify(row)})'>
+
+                            Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteRow('stats','${row.id}',loadStats)">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>`;
+
+}
+
+
+function openStatModal(
+    row = null
+) {
+
+    openModal(
+
+        row
+            ? "Edit Statistic"
+            : "Add Statistic",
+
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Label</label>
+
+                <input
+                    id="modalStatLabel"
+                    value="${escapeHTML(row?.label || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Value</label>
+
+                <input
+                    id="modalStatValue"
+                    type="number"
+                    value="${row?.value ?? 0}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Suffix</label>
+
+                <input
+                    id="modalStatSuffix"
+                    value="${escapeHTML(row?.suffix || "+")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Display Order</label>
+
+                <input
+                    id="modalStatOrder"
+                    type="number"
+                    value="${row?.display_order ?? 0}">
+
+            </div>
+
+        </div>
+
+        `,
+
+
+        async () => {
+
+            const payload = {
+
+                label:
+                    document
+                        .getElementById(
+                            "modalStatLabel"
+                        )
+                        .value
+                        .trim(),
+
+
+                value:
+                    Number(
+                        document
+                            .getElementById(
+                                "modalStatValue"
+                            )
+                            .value
+                    ),
+
+
+                suffix:
+                    document
+                        .getElementById(
+                            "modalStatSuffix"
+                        )
+                        .value
+                        .trim(),
+
+
+                display_order:
+                    Number(
+                        document
+                            .getElementById(
+                                "modalStatOrder"
+                            )
+                            .value
+                    )
+
+            };
+
+
+            const result =
+                row
+
+                ? await supabaseClient
+                    .from("stats")
+                    .update(payload)
+                    .eq(
+                        "id",
+                        row.id
+                    )
+
+                : await supabaseClient
+                    .from("stats")
+                    .insert(
+                        payload
+                    );
+
+
+            if (result.error) {
+
+                toast(
+                    result.error.message,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            closeModal();
+
+            toast(
+                "Statistic saved."
+            );
+
+
+            await loadStats();
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   CERTIFICATES
+========================================================= */
+
+async function loadCertificates() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("certificates")
+        .select("*")
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "certificatesList"
+        );
+
+
+    if (!data?.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No certificates yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        `<div class="item-list">
+
+            ${data.map(row => `
+
+                <div class="item">
+
+                    ${
+                        row.image_url
+                        ?
+                        `<img
+                            class="item-image"
+                            src="${escapeHTML(row.image_url)}"
+                            alt="">`
+                        :
+                        `<div class="item-image"></div>`
+                    }
+
+                    <div class="item-content">
+
+                        <h4>
+                            ${escapeHTML(row.title)}
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(row.issuer || "")}
+                        </p>
+
+                        <div class="item-meta">
+
+                            ${
+                                row.issue_date
+                                ? escapeHTML(row.issue_date)
+                                : ""
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-secondary btn-small"
+                            onclick='openCertificateModal(${JSON.stringify(row)})'>
+
+                            Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteRow('certificates','${row.id}',loadCertificates)">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>`;
+
+}
+
+
+function openCertificateModal(
+    row = null
+) {
+
+    openModal(
+
+        row
+            ? "Edit Certificate"
+            : "Add Certificate",
+
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-group full">
+
+                <label>Certificate Title</label>
+
+                <input
+                    id="modalCertTitle"
+                    value="${escapeHTML(row?.title || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Issuer</label>
+
+                <input
+                    id="modalCertIssuer"
+                    value="${escapeHTML(row?.issuer || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Issue Date</label>
+
+                <input
+                    id="modalCertDate"
+                    type="date"
+                    value="${row?.issue_date || ""}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Description</label>
+
+                <textarea
+                    id="modalCertDescription">${escapeHTML(row?.description || "")}</textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Certificate Image URL</label>
+
+                <input
+                    id="modalCertImage"
+                    value="${escapeHTML(row?.image_url || "")}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Upload Certificate Image</label>
+
+                <input
+                    id="modalCertImageFile"
+                    type="file"
+                    accept="image/*">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Certificate PDF URL</label>
+
+                <input
+                    id="modalCertURL"
+                    value="${escapeHTML(row?.certificate_url || "")}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Upload Certificate PDF</label>
+
+                <input
+                    id="modalCertPDF"
+                    type="file"
+                    accept=".pdf">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Display Order</label>
+
+                <input
+                    id="modalCertOrder"
+                    type="number"
+                    value="${row?.display_order ?? 0}">
+
+            </div>
+
+        </div>
+
+        `,
+
+
+        async () => {
+
+            try {
+
+                let imageUrl =
+                    document
+                        .getElementById(
+                            "modalCertImage"
+                        )
+                        .value
+                        .trim();
+
+
+                let certificateUrl =
+                    document
+                        .getElementById(
+                            "modalCertURL"
+                        )
+                        .value
+                        .trim();
+
+
+                const imageFile =
+                    document
+                        .getElementById(
+                            "modalCertImageFile"
+                        )
+                        .files[0];
+
+
+                const pdfFile =
+                    document
+                        .getElementById(
+                            "modalCertPDF"
+                        )
+                        .files[0];
+
+
+                if (imageFile) {
+
+                    imageUrl =
+                        await uploadFile(
+                            imageFile,
+                            "certificates",
+                            "images"
+                        );
+
+                }
+
+
+                if (pdfFile) {
+
+                    certificateUrl =
+                        await uploadFile(
+                            pdfFile,
+                            "certificates",
+                            "pdfs"
+                        );
+
+                }
+
+
+                const payload = {
+
+                    title:
+                        document
+                            .getElementById(
+                                "modalCertTitle"
+                            )
+                            .value
+                            .trim(),
+
+
+                    issuer:
+                        document
+                            .getElementById(
+                                "modalCertIssuer"
+                            )
+                            .value
+                            .trim(),
+
+
+                    description:
+                        document
+                            .getElementById(
+                                "modalCertDescription"
+                            )
+                            .value
+                            .trim(),
+
+
+                    image_url:
+                        imageUrl,
+
+
+                    certificate_url:
+                        certificateUrl,
+
+
+                    issue_date:
+                        document
+                            .getElementById(
+                                "modalCertDate"
+                            )
+                            .value ||
+                        null,
+
+
+                    display_order:
+                        Number(
+                            document
+                                .getElementById(
+                                    "modalCertOrder"
+                                )
+                                .value
+                        ),
+
+
+                    updated_at:
+                        new Date().toISOString()
+
+                };
+
+
+                const result =
+                    row
+
+                    ? await supabaseClient
+                        .from("certificates")
+                        .update(payload)
+                        .eq(
+                            "id",
+                            row.id
+                        )
+
+                    : await supabaseClient
+                        .from("certificates")
+                        .insert(
+                            payload
+                        );
+
+
+                if (result.error) {
+
+                    throw result.error;
+
+                }
+
+
+                closeModal();
+
+                toast(
+                    "Certificate saved."
+                );
+
+
+                await loadCertificates();
+
+                await loadCounts();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                toast(
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+async function loadTimeline() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("timeline")
+        .select("*")
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "timelineList"
+        );
+
+
+    if (!data?.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No timeline entries yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        `<div class="item-list">
+
+            ${data.map(row => `
+
+                <div class="item">
+
+                    <div class="item-content">
+
+                        <h4>
+
+                            ${escapeHTML(row.year)}
+                            —
+                            ${escapeHTML(row.title)}
+
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                row.description || ""
+                            )}
+                        </p>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-secondary btn-small"
+                            onclick='openTimelineModal(${JSON.stringify(row)})'>
+
+                            Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteRow('timeline','${row.id}',loadTimeline)">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>`;
+
+}
+
+
+function openTimelineModal(
+    row = null
+) {
+
+    openModal(
+
+        row
+            ? "Edit Experience"
+            : "Add Experience",
+
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Year</label>
+
+                <input
+                    id="modalTimelineYear"
+                    value="${escapeHTML(row?.year || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Display Order</label>
+
+                <input
+                    id="modalTimelineOrder"
+                    type="number"
+                    value="${row?.display_order ?? 0}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Title</label>
+
+                <input
+                    id="modalTimelineTitle"
+                    value="${escapeHTML(row?.title || "")}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Description</label>
+
+                <textarea
+                    id="modalTimelineDescription">${escapeHTML(row?.description || "")}</textarea>
+
+            </div>
+
+        </div>
+
+        `,
+
+
+        async () => {
+
+            const payload = {
+
+                year:
+                    document
+                        .getElementById(
+                            "modalTimelineYear"
+                        )
+                        .value
+                        .trim(),
+
+
+                title:
+                    document
+                        .getElementById(
+                            "modalTimelineTitle"
+                        )
+                        .value
+                        .trim(),
+
+
+                description:
+                    document
+                        .getElementById(
+                            "modalTimelineDescription"
+                        )
+                        .value
+                        .trim(),
+
+
+                display_order:
+                    Number(
+                        document
+                            .getElementById(
+                                "modalTimelineOrder"
+                            )
+                            .value
+                    )
+
+            };
+
+
+            const result =
+                row
+
+                ? await supabaseClient
+                    .from("timeline")
+                    .update(payload)
+                    .eq(
+                        "id",
+                        row.id
+                    )
+
+                : await supabaseClient
+                    .from("timeline")
+                    .insert(
+                        payload
+                    );
+
+
+            if (result.error) {
+
+                toast(
+                    result.error.message,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            closeModal();
+
+            toast(
+                "Experience saved."
+            );
+
+
+            await loadTimeline();
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   COFFEE ORIGINS
+========================================================= */
+
+async function loadOrigins() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("coffee_origins")
+        .select("*")
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "originsList"
+        );
+
+
+    if (!data?.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No coffee origins yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        `<div class="item-list">
+
+            ${data.map(row => `
+
+                <div class="item">
+
+                    ${
+                        row.image_url
+                        ?
+                        `<img
+                            class="item-image"
+                            src="${escapeHTML(row.image_url)}"
+                            alt="">`
+                        :
+                        `<div class="item-image"></div>`
+                    }
+
+                    <div class="item-content">
+
+                        <h4>
+
+                            ${escapeHTML(row.country)}
+
+                            ${
+                                row.region
+                                ? " — " +
+                                  escapeHTML(
+                                      row.region
+                                  )
+                                : ""
+                            }
+
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                row.flavor_notes || ""
+                            )}
+                        </p>
+
+                        <div class="item-meta">
+
+                            Coordinates:
+                            ${row.latitude ?? ""}
+                            ,
+                            ${row.longitude ?? ""}
+
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-secondary btn-small"
+                            onclick='openOriginModal(${JSON.stringify(row)})'>
+
+                            Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteRow('coffee_origins','${row.id}',loadOrigins)">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>`;
+
+}
+
+
+function openOriginModal(
+    row = null
+) {
+
+    openModal(
+
+        row
+            ? "Edit Coffee Origin"
+            : "Add Coffee Origin",
+
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Country</label>
+
+                <input
+                    id="modalOriginCountry"
+                    value="${escapeHTML(row?.country || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Region</label>
+
+                <input
+                    id="modalOriginRegion"
+                    value="${escapeHTML(row?.region || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Latitude</label>
+
+                <input
+                    id="modalOriginLat"
+                    type="number"
+                    step="any"
+                    value="${row?.latitude ?? ""}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Longitude</label>
+
+                <input
+                    id="modalOriginLng"
+                    type="number"
+                    step="any"
+                    value="${row?.longitude ?? ""}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Processing</label>
+
+                <input
+                    id="modalOriginProcessing"
+                    value="${escapeHTML(row?.processing || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Roast</label>
+
+                <input
+                    id="modalOriginRoast"
+                    value="${escapeHTML(row?.roast || "")}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Flavor Notes</label>
+
+                <input
+                    id="modalOriginFlavor"
+                    value="${escapeHTML(row?.flavor_notes || "")}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Description</label>
+
+                <textarea
+                    id="modalOriginDescription">${escapeHTML(row?.description || "")}</textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Image URL</label>
+
+                <input
+                    id="modalOriginImage"
+                    value="${escapeHTML(row?.image_url || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Display Order</label>
+
+                <input
+                    id="modalOriginOrder"
+                    type="number"
+                    value="${row?.display_order ?? 0}">
+
+            </div>
+
+        </div>
+
+        `,
+
+
+        async () => {
+
+            const latValue =
+                document
+                    .getElementById(
+                        "modalOriginLat"
+                    )
+                    .value;
+
+
+            const lngValue =
+                document
+                    .getElementById(
+                        "modalOriginLng"
+                    )
+                    .value;
+
+
+            const payload = {
+
+                country:
+                    document
+                        .getElementById(
+                            "modalOriginCountry"
+                        )
+                        .value
+                        .trim(),
+
+
+                region:
+                    document
+                        .getElementById(
+                            "modalOriginRegion"
+                        )
+                        .value
+                        .trim(),
+
+
+                latitude:
+                    latValue === ""
+                    ? null
+                    : Number(latValue),
+
+
+                longitude:
+                    lngValue === ""
+                    ? null
+                    : Number(lngValue),
+
+
+                flavor_notes:
+                    document
+                        .getElementById(
+                            "modalOriginFlavor"
+                        )
+                        .value
+                        .trim(),
+
+
+                processing:
+                    document
+                        .getElementById(
+                            "modalOriginProcessing"
+                        )
+                        .value
+                        .trim(),
+
+
+                roast:
+                    document
+                        .getElementById(
+                            "modalOriginRoast"
+                        )
+                        .value
+                        .trim(),
+
+
+                description:
+                    document
+                        .getElementById(
+                            "modalOriginDescription"
+                        )
+                        .value
+                        .trim(),
+
+
+                image_url:
+                    document
+                        .getElementById(
+                            "modalOriginImage"
+                        )
+                        .value
+                        .trim(),
+
+
+                display_order:
+                    Number(
+                        document
+                            .getElementById(
+                                "modalOriginOrder"
+                            )
+                            .value
+                    ),
+
+
+                updated_at:
+                    new Date().toISOString()
+
+            };
+
+
+            const result =
+                row
+
+                ? await supabaseClient
+                    .from("coffee_origins")
+                    .update(payload)
+                    .eq(
+                        "id",
+                        row.id
+                    )
+
+                : await supabaseClient
+                    .from("coffee_origins")
+                    .insert(
+                        payload
+                    );
+
+
+            if (result.error) {
+
+                toast(
+                    result.error.message,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            closeModal();
+
+            toast(
+                "Coffee origin saved."
+            );
+
+
+            await loadOrigins();
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   PROJECTS
+========================================================= */
+
+async function loadProjects() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("projects")
+        .select("*")
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "projectsList"
+        );
+
+
+    if (!data?.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No projects yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        `<div class="item-list">
+
+            ${data.map(row => `
+
+                <div class="item">
+
+                    ${
+                        row.main_image
+                        ?
+                        `<img
+                            class="item-image"
+                            src="${escapeHTML(row.main_image)}"
+                            alt="">`
+                        :
+                        `<div class="item-image"></div>`
+                    }
+
+                    <div class="item-content">
+
+                        <h4>
+                            ${escapeHTML(row.title)}
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                row.category || ""
+                            )}
+                        </p>
+
+                        <div class="item-meta">
+
+                            ${
+                                row.featured
+                                ? "Featured"
+                                : "Standard"
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-secondary btn-small"
+                            onclick='openProjectModal(${JSON.stringify(row)})'>
+
+                            Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteRow('projects','${row.id}',loadProjects)">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>`;
+
+}
+
+
+function openProjectModal(
+    row = null
+) {
+
+    openModal(
+
+        row
+            ? "Edit Project"
+            : "Add Project",
+
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-group full">
+
+                <label>Project Title</label>
+
+                <input
+                    id="modalProjectTitle"
+                    value="${escapeHTML(row?.title || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Category</label>
+
+                <input
+                    id="modalProjectCategory"
+                    value="${escapeHTML(row?.category || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Display Order</label>
+
+                <input
+                    id="modalProjectOrder"
+                    type="number"
+                    value="${row?.display_order ?? 0}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Description</label>
+
+                <textarea
+                    id="modalProjectDescription">${escapeHTML(row?.description || "")}</textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Main Image URL</label>
+
+                <input
+                    id="modalProjectImage"
+                    value="${escapeHTML(row?.main_image || "")}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Upload Main Image</label>
+
+                <input
+                    id="modalProjectImageFile"
+                    type="file"
+                    accept="image/*">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Project Link</label>
+
+                <input
+                    id="modalProjectLink"
+                    value="${escapeHTML(row?.link || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Featured</label>
+
+                <select id="modalProjectFeatured">
+
+                    <option
+                        value="false"
+                        ${!row?.featured ? "selected" : ""}>
+
+                        No
+
+                    </option>
+
+                    <option
+                        value="true"
+                        ${row?.featured ? "selected" : ""}>
+
+                        Yes
+
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        `,
+
+
+        async () => {
+
+            try {
+
+                let imageUrl =
+                    document
+                        .getElementById(
+                            "modalProjectImage"
+                        )
+                        .value
+                        .trim();
+
+
+                const imageFile =
+                    document
+                        .getElementById(
+                            "modalProjectImageFile"
+                        )
+                        .files[0];
+
+
+                if (imageFile) {
+
+                    imageUrl =
+                        await uploadFile(
+                            imageFile,
+                            "project-images",
+                            "projects"
+                        );
+
+                }
+
+
+                const payload = {
+
+                    title:
+                        document
+                            .getElementById(
+                                "modalProjectTitle"
+                            )
+                            .value
+                            .trim(),
+
+
+                    category:
+                        document
+                            .getElementById(
+                                "modalProjectCategory"
+                            )
+                            .value
+                            .trim(),
+
+
+                    description:
+                        document
+                            .getElementById(
+                                "modalProjectDescription"
+                            )
+                            .value
+                            .trim(),
+
+
+                    main_image:
+                        imageUrl,
+
+
+                    link:
+                        document
+                            .getElementById(
+                                "modalProjectLink"
+                            )
+                            .value
+                            .trim(),
+
+
+                    display_order:
+                        Number(
+                            document
+                                .getElementById(
+                                    "modalProjectOrder"
+                                )
+                                .value
+                        ),
+
+
+                    featured:
+                        document
+                            .getElementById(
+                                "modalProjectFeatured"
+                            )
+                            .value === "true",
+
+
+                    updated_at:
+                        new Date().toISOString()
+
+                };
+
+
+                const result =
+                    row
+
+                    ? await supabaseClient
+                        .from("projects")
+                        .update(payload)
+                        .eq(
+                            "id",
+                            row.id
+                        )
+
+                    : await supabaseClient
+                        .from("projects")
+                        .insert(
+                            payload
+                        );
+
+
+                if (result.error) {
+
+                    throw result.error;
+
+                }
+
+
+                closeModal();
+
+                toast(
+                    "Project saved."
+                );
+
+
+                await loadProjects();
+
+                await loadCounts();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                toast(
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   GALLERY
+========================================================= */
+
+async function loadGallery() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("gallery")
+        .select("*")
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "galleryList"
+        );
+
+
+    if (!data?.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No gallery images yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        `<div class="item-list">
+
+            ${data.map(row => `
+
+                <div class="item">
+
+                    ${
+                        row.image_url
+                        ?
+                        `<img
+                            class="item-image"
+                            src="${escapeHTML(row.image_url)}"
+                            alt="">`
+                        :
+                        `<div class="item-image"></div>`
+                    }
+
+                    <div class="item-content">
+
+                        <h4>
+                            ${escapeHTML(
+                                row.title ||
+                                "Untitled"
+                            )}
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                row.category ||
+                                "Gallery"
+                            )}
+                        </p>
+
+                        <div class="item-meta">
+                            Order:
+                            ${row.display_order ?? 0}
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-secondary btn-small"
+                            onclick='openGalleryModal(${JSON.stringify(row)})'>
+
+                            Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteRow('gallery','${row.id}',loadGallery)">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>`;
+
+}
+
+
+function openGalleryModal(
+    row = null
+) {
+
+    openModal(
+
+        row
+            ? "Edit Gallery Image"
+            : "Add Gallery Image",
+
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-group full">
+
+                <label>Image URL</label>
+
+                <input
+                    id="modalGalleryImage"
+                    value="${escapeHTML(row?.image_url || "")}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Upload Image</label>
+
+                <input
+                    id="modalGalleryFile"
+                    type="file"
+                    accept="image/*">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Title</label>
+
+                <input
+                    id="modalGalleryTitle"
+                    value="${escapeHTML(row?.title || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Category</label>
+
+                <input
+                    id="modalGalleryCategory"
+                    value="${escapeHTML(row?.category || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Display Order</label>
+
+                <input
+                    id="modalGalleryOrder"
+                    type="number"
+                    value="${row?.display_order ?? 0}">
+
+            </div>
+
+        </div>
+
+        `,
+
+
+        async () => {
+
+            try {
+
+                let imageUrl =
+                    document
+                        .getElementById(
+                            "modalGalleryImage"
+                        )
+                        .value
+                        .trim();
+
+
+                const file =
+                    document
+                        .getElementById(
+                            "modalGalleryFile"
+                        )
+                        .files[0];
+
+
+                if (file) {
+
+                    imageUrl =
+                        await uploadFile(
+                            file,
+                            "gallery",
+                            "portfolio"
+                        );
+
+                }
+
+
+                if (!imageUrl) {
+
+                    toast(
+                        "Please provide an image.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                const payload = {
+
+                    image_url:
+                        imageUrl,
+
+
+                    title:
+                        document
+                            .getElementById(
+                                "modalGalleryTitle"
+                            )
+                            .value
+                            .trim(),
+
+
+                    category:
+                        document
+                            .getElementById(
+                                "modalGalleryCategory"
+                            )
+                            .value
+                            .trim(),
+
+
+                    display_order:
+                        Number(
+                            document
+                                .getElementById(
+                                    "modalGalleryOrder"
+                                )
+                                .value
+                        )
+
+                };
+
+
+                const result =
+                    row
+
+                    ? await supabaseClient
+                        .from("gallery")
+                        .update(payload)
+                        .eq(
+                            "id",
+                            row.id
+                        )
+
+                    : await supabaseClient
+                        .from("gallery")
+                        .insert(
+                            payload
+                        );
+
+
+                if (result.error) {
+
+                    throw result.error;
+
+                }
+
+
+                closeModal();
+
+                toast(
+                    "Gallery image saved."
+                );
+
+
+                await loadGallery();
+
+                await loadCounts();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                toast(
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   SOCIAL LINKS
+========================================================= */
+
+async function loadSocial() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("social_links")
+        .select("*")
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "socialList"
+        );
+
+
+    if (!data?.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No social links yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        `<div class="item-list">
+
+            ${data.map(row => `
+
+                <div class="item">
+
+                    <div class="item-content">
+
+                        <h4>
+                            ${escapeHTML(
+                                row.platform
+                            )}
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(
+                                row.url
+                            )}
+                        </p>
+
+                        <div class="item-meta">
+
+                            ${
+                                row.active
+                                ? "Active"
+                                : "Hidden"
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-secondary btn-small"
+                            onclick='openSocialModal(${JSON.stringify(row)})'>
+
+                            Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteRow('social_links','${row.id}',loadSocial)">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>`;
+
+}
+
+
+function openSocialModal(
+    row = null
+) {
+
+    openModal(
+
+        row
+            ? "Edit Social Link"
+            : "Add Social Link",
+
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Platform</label>
+
+                <input
+                    id="modalSocialPlatform"
+                    placeholder="Instagram"
+                    value="${escapeHTML(row?.platform || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Icon</label>
+
+                <input
+                    id="modalSocialIcon"
+                    placeholder="instagram"
+                    value="${escapeHTML(row?.icon || "")}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>URL</label>
+
+                <input
+                    id="modalSocialURL"
+                    value="${escapeHTML(row?.url || "")}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Display Order</label>
+
+                <input
+                    id="modalSocialOrder"
+                    type="number"
+                    value="${row?.display_order ?? 0}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Active</label>
+
+                <select id="modalSocialActive">
+
+                    <option
+                        value="true"
+                        ${row?.active !== false ? "selected" : ""}>
+
+                        Visible
+
+                    </option>
+
+                    <option
+                        value="false"
+                        ${row?.active === false ? "selected" : ""}>
+
+                        Hidden
+
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        `,
+
+
+        async () => {
+
+            const payload = {
+
+                platform:
+                    document
+                        .getElementById(
+                            "modalSocialPlatform"
+                        )
+                        .value
+                        .trim(),
+
+
+                url:
+                    document
+                        .getElementById(
+                            "modalSocialURL"
+                        )
+                        .value
+                        .trim(),
+
+
+                icon:
+                    document
+                        .getElementById(
+                            "modalSocialIcon"
+                        )
+                        .value
+                        .trim(),
+
+
+                display_order:
+                    Number(
+                        document
+                            .getElementById(
+                                "modalSocialOrder"
+                            )
+                            .value
+                    ),
+
+
+                active:
+                    document
+                        .getElementById(
+                            "modalSocialActive"
+                        )
+                        .value === "true"
+
+            };
+
+
+            const result =
+                row
+
+                ? await supabaseClient
+                    .from("social_links")
+                    .update(payload)
+                    .eq(
+                        "id",
+                        row.id
+                    )
+
+                : await supabaseClient
+                    .from("social_links")
+                    .insert(
+                        payload
+                    );
+
+
+            if (result.error) {
+
+                toast(
+                    result.error.message,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            closeModal();
+
+            toast(
+                "Social link saved."
+            );
+
+
+            await loadSocial();
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+async function loadSections() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("sections")
+        .select("*")
+        .order(
+            "display_order",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    const container =
+        document.getElementById(
+            "sectionsList"
+        );
+
+
+    if (!data?.length) {
+
+        container.innerHTML =
+            `<div class="empty">
+                No sections yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        data.map(row => `
+
+            <div class="section-item">
+
+                <div class="drag">
+                    ☷
+                </div>
+
+
+                <div class="section-info">
+
+                    <strong>
+                        ${escapeHTML(
+                            row.title ||
+                            row.section_key
+                        )}
+                    </strong>
+
+
+                    <span>
+
+                        ${escapeHTML(
+                            row.section_type
+                        )}
+
+                        · order
+                        ${row.display_order ?? 0}
+
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="visibility ${
+                        row.visible
+                        ? "visible"
+                        : "hidden"
+                    }"
+                    onclick="toggleSection(
+                        '${row.id}',
+                        ${row.visible}
+                    )">
+
+                    ${
+                        row.visible
+                        ? "Visible"
+                        : "Hidden"
+                    }
+
+                </button>
+
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn-secondary btn-small"
+                        onclick='openSectionModal(${JSON.stringify(row)})'>
+
+                        Edit
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-danger btn-small"
+                        onclick="deleteSection('${row.id}')">
+
+                        Delete
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+function openSectionModal(
+    row = null
+) {
+
+    openModal(
+
+        row
+            ? "Edit Section"
+            : "Add Section",
+
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>Section Key</label>
+
+                <input
+                    id="modalSectionKey"
+                    placeholder="coffee-lab"
+                    value="${escapeHTML(
+                        row?.section_key || ""
+                    )}"
+                    ${row ? "readonly" : ""}>
+
+
+                <div class="form-help">
+                    Use lowercase letters and hyphens.
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Section Type</label>
+
+                <select id="modalSectionType">
+
+                    <option
+                        value="hero"
+                        ${row?.section_type === "hero"
+                            ? "selected"
+                            : ""}>
+
+                        Hero
+
+                    </option>
+
+
+                    <option
+                        value="about"
+                        ${row?.section_type === "about"
+                            ? "selected"
+                            : ""}>
+
+                        About
+
+                    </option>
+
+
+                    <option
+                        value="stats"
+                        ${row?.section_type === "stats"
+                            ? "selected"
+                            : ""}>
+
+                        Statistics
+
+                    </option>
+
+
+                    <option
+                        value="certifications"
+                        ${row?.section_type === "certifications"
+                            ? "selected"
+                            : ""}>
+
+                        Certifications
+
+                    </option>
+
+
+                    <option
+                        value="timeline"
+                        ${row?.section_type === "timeline"
+                            ? "selected"
+                            : ""}>
+
+                        Timeline
+
+                    </option>
+
+
+                    <option
+                        value="coffee-map"
+                        ${row?.section_type === "coffee-map"
+                            ? "selected"
+                            : ""}>
+
+                        Coffee Map
+
+                    </option>
+
+
+                    <option
+                        value="projects"
+                        ${row?.section_type === "projects"
+                            ? "selected"
+                            : ""}>
+
+                        Projects
+
+                    </option>
+
+
+                    <option
+                        value="gallery"
+                        ${row?.section_type === "gallery"
+                            ? "selected"
+                            : ""}>
+
+                        Gallery
+
+                    </option>
+
+
+                    <option
+                        value="contact"
+                        ${row?.section_type === "contact"
+                            ? "selected"
+                            : ""}>
+
+                        Contact
+
+                    </option>
+
+
+                    <option
+                        value="custom"
+                        ${row?.section_type === "custom"
+                            ? "selected"
+                            : ""}>
+
+                        Custom
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Title</label>
+
+                <input
+                    id="modalSectionTitle"
+                    value="${escapeHTML(
+                        row?.title || ""
+                    )}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Subtitle</label>
+
+                <input
+                    id="modalSectionSubtitle"
+                    value="${escapeHTML(
+                        row?.subtitle || ""
+                    )}">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>Description</label>
+
+                <textarea
+                    id="modalSectionDescription">${escapeHTML(
+                        row?.description || ""
+                    )}</textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Display Order</label>
+
+                <input
+                    id="modalSectionOrder"
+                    type="number"
+                    value="${row?.display_order ?? 0}">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Visible</label>
+
+                <select id="modalSectionVisible">
+
+                    <option
+                        value="true"
+                        ${row?.visible !== false
+                            ? "selected"
+                            : ""}>
+
+                        Visible
+
+                    </option>
+
+
+                    <option
+                        value="false"
+                        ${row?.visible === false
+                            ? "selected"
+                            : ""}>
+
+                        Hidden
+
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        `,
+
+
+        async () => {
+
+            const key =
+                document
+                    .getElementById(
+                        "modalSectionKey"
+                    )
+                    .value
+                    .trim()
+                    .toLowerCase()
+                    .replace(
+                        /\s+/g,
+                        "-"
+                    );
+
+
+            if (!key) {
+
+                toast(
+                    "Section key is required.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const payload = {
+
+                section_key:
+                    key,
+
+
+                title:
+                    document
+                        .getElementById(
+                            "modalSectionTitle"
+                        )
+                        .value
+                        .trim(),
+
+
+                subtitle:
+                    document
+                        .getElementById(
+                            "modalSectionSubtitle"
+                        )
+                        .value
+                        .trim(),
+
+
+                description:
+                    document
+                        .getElementById(
+                            "modalSectionDescription"
+                        )
+                        .value
+                        .trim(),
+
+
+                section_type:
+                    document
+                        .getElementById(
+                            "modalSectionType"
+                        )
+                        .value,
+
+
+                display_order:
+                    Number(
+                        document
+                            .getElementById(
+                                "modalSectionOrder"
+                            )
+                            .value
+                    ),
+
+
+                visible:
+                    document
+                        .getElementById(
+                            "modalSectionVisible"
+                        )
+                        .value === "true",
+
+
+                updated_at:
+                    new Date().toISOString()
+
+            };
+
+
+            const result =
+                row
+
+                ? await supabaseClient
+                    .from("sections")
+                    .update(payload)
+                    .eq(
+                        "id",
+                        row.id
+                    )
+
+                : await supabaseClient
+                    .from("sections")
+                    .insert(
+                        payload
+                    );
+
+
+            if (result.error) {
+
+                toast(
+                    result.error.message,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            closeModal();
+
+            toast(
+                "Section saved."
+            );
+
+
+            await loadSections();
+
+            await loadCounts();
+
+        }
+
+    );
+
+}
+
+
+async function toggleSection(
+    id,
+    currentValue
+) {
+
+    const {
+        error
+    } = await supabaseClient
+        .from("sections")
+        .update({
+            visible:
+                !currentValue
+        })
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        toast(
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    toast(
+        currentValue
+        ? "Section hidden."
+        : "Section is now visible."
+    );
+
+
+    await loadSections();
+
+}
+
+
+async function deleteSection(
+    id
+) {
+
+    const confirmed =
+        confirm(
+            "Delete this section? This cannot be undone."
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("sections")
+        .delete()
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        toast(
+            error.message,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    toast(
+        "Section deleted."
+    );
+
+
+    await loadSections();
+
+    await loadCounts();
+
+}
+
+
+/* =========================================================
+   DELETE GENERIC ROW
+========================================================= */
+
+async function deleteRow(
+    table,
+    id,
+    reloadFunction
+) {
+
+    const confirmed =
+        confirm(
+            "Delete this item? This cannot be undone."
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from(table)
+        .delete()
+        .eq(
+            "id",
+            id
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+
+        toast(
+            error.message,
+            "error"
+        );
+
+
+        return;
+
+    }
+
+
+    toast(
+        "Item deleted."
+    );
+
+
+    if (reloadFunction) {
+
+        await reloadFunction();
+
+    }
+
+
+    await loadCounts();
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL ON BACKDROP
+========================================================= */
+
+document
+    .getElementById(
+        "modalBackdrop"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "modalBackdrop"
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
