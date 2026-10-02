@@ -23,6 +23,8 @@
             <p>COFFEE PORTFOLIO CMS</p>
         </div>
 
+        <!-- ================= LOGIN FORM ================= -->
+
         <form id="loginForm">
 
             <div class="form-group">
@@ -51,58 +53,366 @@
                 SIGN IN
             </button>
 
+            <!-- Forgot Password -->
+
+            <div class="forgot-password">
+                <button
+                    type="button"
+                    id="forgotPasswordButton"
+                >
+                    Forgot Password?
+                </button>
+            </div>
+
             <p id="loginMessage"></p>
 
         </form>
+
+
+        <!-- ================= FORGOT PASSWORD ================= -->
+
+        <div id="forgotPasswordPanel" class="forgot-password-panel">
+
+            <div class="forgot-header">
+
+                <h2>Reset Password</h2>
+
+                <p>
+                    Enter your admin email and we'll send you a
+                    secure password reset link.
+                </p>
+
+            </div>
+
+            <form id="forgotPasswordForm">
+
+                <div class="form-group">
+
+                    <label>Admin Email</label>
+
+                    <input
+                        type="email"
+                        id="resetEmail"
+                        placeholder="Admin email"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    id="resetButton"
+                >
+                    SEND RESET LINK
+                </button>
+
+                <p id="resetMessage"></p>
+
+            </form>
+
+            <button
+                type="button"
+                id="backToLogin"
+                class="back-login"
+            >
+                ← BACK TO LOGIN
+            </button>
+
+        </div>
 
     </div>
 
 </div>
 
+
+<!-- ================= SUPABASE ================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="../js/supabase.js"></script>
 
+
 <script>
 
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
 const loginForm = document.getElementById("loginForm");
+
 const loginMessage = document.getElementById("loginMessage");
+
 const loginButton = document.getElementById("loginButton");
+
+const forgotPasswordButton =
+    document.getElementById("forgotPasswordButton");
+
+const forgotPasswordPanel =
+    document.getElementById("forgotPasswordPanel");
+
+const forgotPasswordForm =
+    document.getElementById("forgotPasswordForm");
+
+const resetButton =
+    document.getElementById("resetButton");
+
+const resetMessage =
+    document.getElementById("resetMessage");
+
+const backToLogin =
+    document.getElementById("backToLogin");
+
+
+/* =========================================================
+   FORGOT PASSWORD PANEL
+========================================================= */
+
+forgotPasswordButton.addEventListener("click", () => {
+
+    loginForm.style.display = "none";
+
+    forgotPasswordPanel.style.display = "block";
+
+    loginMessage.textContent = "";
+
+    const loginEmail =
+        document.getElementById("email").value.trim();
+
+    if (loginEmail) {
+
+        document.getElementById("resetEmail").value =
+            loginEmail;
+
+    }
+
+});
+
+
+/* =========================================================
+   BACK TO LOGIN
+========================================================= */
+
+backToLogin.addEventListener("click", () => {
+
+    forgotPasswordPanel.style.display = "none";
+
+    loginForm.style.display = "block";
+
+    resetMessage.textContent = "";
+
+});
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
 
 loginForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
 
     loginButton.disabled = true;
+
     loginButton.textContent = "SIGNING IN...";
 
     loginMessage.textContent = "";
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+        });
+
 
     if (error) {
 
         console.error(error);
 
-        loginMessage.textContent = error.message;
+        loginMessage.textContent =
+            error.message;
 
         loginButton.disabled = false;
+
         loginButton.textContent = "SIGN IN";
 
         return;
+
     }
+
+
+    /* Successful login */
 
     window.location.href = "dashboard.html";
 
 });
 
+
+/* =========================================================
+   PASSWORD RESET
+========================================================= */
+
+forgotPasswordForm.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+
+    const email =
+        document.getElementById("resetEmail").value.trim();
+
+
+    if (!email) {
+
+        resetMessage.textContent =
+            "Please enter your admin email.";
+
+        return;
+
+    }
+
+
+    resetButton.disabled = true;
+
+    resetButton.textContent =
+        "SENDING...";
+
+    resetMessage.textContent = "";
+
+
+    /*
+       This is the page Supabase will open after
+       the user clicks the email reset link.
+    */
+
+    const resetRedirectUrl =
+        `${window.location.origin}/admin/reset-password.html`;
+
+
+    const { error } =
+        await supabaseClient.auth.resetPasswordForEmail(
+
+            email,
+
+            {
+                redirectTo: resetRedirectUrl
+            }
+
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        resetMessage.textContent =
+            error.message;
+
+        resetButton.disabled = false;
+
+        resetButton.textContent =
+            "SEND RESET LINK";
+
+        return;
+
+    }
+
+
+    /*
+       Do not reveal whether the email exists.
+       This is safer for an admin login system.
+    */
+
+    resetMessage.textContent =
+        "If this email belongs to an admin account, a password reset link has been sent. Check your inbox and spam folder.";
+
+    resetButton.disabled = false;
+
+    resetButton.textContent =
+        "SEND RESET LINK";
+
+});
+
+
 </script>
+
+
+<!-- =====================================================
+     FORGOT PASSWORD PANEL STYLES
+===================================================== -->
+
+<style>
+
+.forgot-password {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.forgot-password button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #7D2F2F;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.forgot-password button:hover {
+    text-decoration: underline;
+}
+
+.forgot-password-panel {
+    display: none;
+}
+
+.forgot-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.forgot-header h2 {
+    margin-bottom: 8px;
+}
+
+.forgot-header p {
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.75;
+}
+
+#resetMessage {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.back-login {
+    display: block;
+    margin: 20px auto 0;
+    background: none;
+    border: none;
+    color: #39503D;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.back-login:hover {
+    text-decoration: underline;
+}
+
+</style>
 
 </body>
 </html>
